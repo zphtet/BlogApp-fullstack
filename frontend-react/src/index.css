@@ -1,3 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+
+/* 'Poppins', sans-serif; */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  font-family: "Poppins", sans-serif;
+}
+@layer base {
+  * {
+    @apply transition-colors duration-500;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply border px-5 py-2 rounded-md bg-theme outline-none text-white tb:px-3 tb:py-1;
+  }
+}
