@@ -1,9 +1,6 @@
 import { createContext, useReducer } from "react";
 import React from "react";
 
-// const initialState = {
-//   mode: "light",
-// };
 const initialState = "light";
 
 const reducer = (state, action) => {

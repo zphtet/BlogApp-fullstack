@@ -1,22 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
-
-/* 'Poppins', sans-serif; */
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@100;200;300;400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html {
-  font-family: "Poppins", sans-serif;
+  font-family: "Barlow", sans-serif;
 }
 @layer base {
   * {
-    @apply transition-colors duration-500;
+    @apply transition-colors;
   }
 }
 
 @layer components {
   .btn {
     @apply border px-5 py-2 rounded-md bg-theme outline-none text-white tb:px-3 tb:py-1;
+  }
+  .card-container {
+    @apply flex  flex-col gap-5;
+  }
+  .card-item {
+    @apply w-[calc((100%-60px)/4)];
   }
 }

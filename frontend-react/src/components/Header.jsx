@@ -11,7 +11,7 @@ const Header = () => {
   };
   const isLight = state === "light";
   return (
-    <div className="shadow max-w-container px-5 py-5 flex items-center justify-between dark:bg-dark">
+    <div className="shadow mx-auto max-w-container px-5 py-5 flex items-center justify-between dark:bg-dark">
       <h1 className="text-3xl text-theme font-bold tb:text-2xl">EpicDev</h1>
       <div className="flex items-center gap-8 tb:gap-3">
         <button className="btn tb:text-xs">Register</button>
