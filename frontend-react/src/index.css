@@ -23,4 +23,10 @@ html {
   .card-item {
     @apply w-[calc((100%-60px)/4)];
   }
+  .active-tab {
+    @apply border-b border-b-gray;
+  }
+  .profile-tab {
+    @apply text-lg hover:border-b border-b-gray ml:text-base;
+  }
 }

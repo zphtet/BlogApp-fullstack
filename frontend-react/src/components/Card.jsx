@@ -1,6 +1,8 @@
 import React from "react";
 import cardImg from "../assets/default-card.jpg";
 import authorImg from "../assets/author.jpg";
+import { BsBookmarkPlus } from "react-icons/bs";
+// BsFillBookmarkPlusFill;
 const Card = () => {
   return (
     <div className="post px-5 dark:text-white ml:px-0">
@@ -20,7 +22,7 @@ const Card = () => {
             <p className="post-date text-sm text-dgray ">April 6 2023</p>
           </div>
 
-          <h3 className="text-2xl font-bold cursor-pointer">
+          <h3 className="text-2xl font-bold cursor-pointer ml:text-xl">
             How to use UseEffect efficiently in React{" "}
           </h3>
           <p>
@@ -36,6 +38,7 @@ const Card = () => {
               Web developement
             </p>
             <p>6 min read</p>
+            <BsBookmarkPlus className="cursor-pointer w-5 h-5" />
           </div>
         </div>
         <div className="post-img-container max-w-[150px] tb:hidden">

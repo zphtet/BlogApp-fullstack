@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { themeContext } from "../Context/ThemeContext";
 import moon from "../assets/moon.png";
 import sun from "../assets/sun.png";
+import authorImg from "../assets/author.jpg";
 const Header = () => {
   const { state, dispatch } = useContext(themeContext);
   const modeHandler = () => {
@@ -14,7 +15,17 @@ const Header = () => {
     <div className="shadow mx-auto max-w-container px-5 py-5 flex items-center justify-between dark:bg-dark">
       <h1 className="text-3xl text-theme font-bold tb:text-2xl">EpicDev</h1>
       <div className="flex items-center gap-8 tb:gap-3">
-        <button className="btn tb:text-xs">Register</button>
+        {/* <button className="btn tb:text-xs">Register</button> */}
+
+        <div className="cursor-pointer flex flex-col items-center">
+          <img
+            className="w-10 h-10 rounded-full text-center"
+            src={authorImg}
+            alt="your profile"
+          />
+          <p className="profile-name dark:text-white">Tony Abra</p>
+        </div>
+        {/* <button className="btn tb:text-xs">logout</button> */}
         <button
           className=" btn flex items-center gap-2 tb:text-xs"
           onClick={modeHandler}
