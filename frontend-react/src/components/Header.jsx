@@ -19,13 +19,13 @@ const Header = () => {
 
         <div className="cursor-pointer flex flex-col items-center">
           <img
-            className="w-10 h-10 rounded-full text-center"
+            className="w-10 h-10 rounded-full text-center ml:w-6 ml:h-6"
             src={authorImg}
             alt="your profile"
           />
-          <p className="profile-name dark:text-white">Tony Abra</p>
+          <p className="profile-name dark:text-white ml:text-xs">Tony Abra</p>
         </div>
-        {/* <button className="btn tb:text-xs">logout</button> */}
+        <button className="btn tb:text-xs">logout</button>
         <button
           className=" btn flex items-center gap-2 tb:text-xs"
           onClick={modeHandler}

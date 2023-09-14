@@ -38,7 +38,7 @@ const Card = () => {
               Web developement
             </p>
             <p>6 min read</p>
-            <BsBookmarkPlus className="cursor-pointer w-5 h-5" />
+            <BsBookmarkPlus className="cursor-pointer w-5 h-5 " />
           </div>
         </div>
         <div className="post-img-container max-w-[150px] tb:hidden">
