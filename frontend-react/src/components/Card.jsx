@@ -2,6 +2,7 @@ import React from "react";
 import cardImg from "../assets/default-card.jpg";
 import authorImg from "../assets/author.jpg";
 import { BsBookmarkPlus } from "react-icons/bs";
+import { Link } from "react-router-dom";
 // BsFillBookmarkPlusFill;
 const Card = () => {
   return (
@@ -23,7 +24,9 @@ const Card = () => {
           </div>
 
           <h3 className="text-2xl font-bold cursor-pointer ml:text-xl">
-            How to use UseEffect efficiently in React{" "}
+            <Link to={"/posts/postid"}>
+              How to use UseEffect efficiently in React{" "}
+            </Link>
           </h3>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
@@ -42,7 +45,9 @@ const Card = () => {
           </div>
         </div>
         <div className="post-img-container max-w-[150px] tb:hidden">
-          <img className="cursor-pointer" src={cardImg} alt="post img" />
+          <Link to={"/posts/postid"}>
+            <img className="cursor-pointer" src={cardImg} alt="post img" />
+          </Link>
         </div>
       </div>
     </div>

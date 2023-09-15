@@ -9,7 +9,7 @@ html {
 }
 @layer base {
   * {
-    @apply transition-colors;
+    /* @apply transition-colors; */
   }
 }
 
@@ -28,5 +28,11 @@ html {
   }
   .profile-tab {
     @apply text-lg hover:border-b border-b-gray ml:text-base;
+  }
+  .input {
+    @apply px-2 py-2 outline-theme dark:bg-[#5f656e];
+  }
+  .form-btn {
+    @apply border py-[6px] bg-theme text-white;
   }
 }
