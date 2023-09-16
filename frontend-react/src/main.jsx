@@ -12,6 +12,7 @@ import Signup from "./components/Signup.jsx";
 import Login from "./components/Login.jsx";
 import Card from "./components/Card.jsx";
 import SavedPosts from "./components/SavedPosts.jsx";
+import Other from "./components/Other.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <CardContainer />,
+      },
+      {
+        path: "/otherauthor",
+        element: <Other />,
       },
       {
         path: "/posts/:id",

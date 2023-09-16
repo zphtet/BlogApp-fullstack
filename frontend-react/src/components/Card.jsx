@@ -43,6 +43,8 @@ const Card = ({ mine, saved }) => {
             <p>6 min read</p>
             {saved ? (
               <BsFillBookmarkPlusFill className="cursor-pointer w-5 h-5 " />
+            ) : mine ? (
+              ""
             ) : (
               <BsBookmarkPlus className="cursor-pointer w-5 h-5 " />
             )}
