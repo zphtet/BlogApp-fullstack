@@ -10,6 +10,8 @@ import CardContainer from "./components/CardContainer.jsx";
 // import Card from "./components/Card.jsx";
 import Signup from "./components/Signup.jsx";
 import Login from "./components/Login.jsx";
+import Card from "./components/Card.jsx";
+import SavedPosts from "./components/SavedPosts.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,6 +29,16 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
+        children: [
+          {
+            path: "/profile",
+            element: <Card />,
+          },
+          {
+            path: "/profile/savedposts",
+            element: <SavedPosts />,
+          },
+        ],
       },
       {
         path: "/signup",
