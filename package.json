@@ -1,0 +1,18 @@
+{
+  "name": "blogapp-fullstack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "frontend": "npm run dev --prefix frontend-react",
+    "backend": "npm run dev --prefix backend-node",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\" --kill-others"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.1"
+  }
+}
