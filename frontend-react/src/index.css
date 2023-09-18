@@ -11,6 +11,12 @@ html {
   * {
     /* @apply transition-colors; */
   }
+  svg {
+    @apply dark:text-white;
+  }
+  #detail thead tr th {
+    @apply bg-theme text-white;
+  }
 }
 
 @layer components {
