@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { themeContext } from "../Context/ThemeContext";
 import moon from "../assets/moon.png";
 import sun from "../assets/sun.png";
-import authorImg from "../assets/author.jpg";
+// import authorImg from "../assets/author.jpg";
 // import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 const Header = () => {
@@ -22,6 +22,9 @@ const Header = () => {
       <div className="flex items-center gap-8 tb:gap-3">
         <button className="btn tb:text-xs">
           <Link to={"/signup"}>Register</Link>
+        </button>
+        <button className="btn tb:text-xs">
+          <Link to={"/editor"}>Create Post</Link>
         </button>
         <button
           className=" btn flex items-center gap-2 tb:text-xs"

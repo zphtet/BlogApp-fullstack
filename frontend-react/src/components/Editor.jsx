@@ -1,23 +1,23 @@
 import React from "react";
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
-import Code from "@editorjs/code";
 import Quote from "@editorjs/quote";
 import inlineCode from "@editorjs/inline-code";
-import imageTool from "@editorjs/image";
 import linkTool from "@editorjs/link";
 import table from "@editorjs/table";
-import simpleImage from "@editorjs/simple-image";
-import rawTool from "@editorjs/raw";
 import Embed from "@editorjs/embed";
-const Editor = () => {
-  console.log(window.location.origin);
+import codeBox from "@bomdi/codebox";
+import Warning from "@editorjs/warning";
+import Delimiter from "@editorjs/delimiter";
+
+const Editor = ({ setData }) => {
   const initEditor = () => {
     const editor = new EditorJS({
       holder: "editorjs",
       onChange: async () => {
         const data = await editor.saver.save();
-        console.log(data);
+        // console.log(data);
+        setData(data);
       },
       onReady: () => {
         console.log("Editor.js is ready to work!");
@@ -33,26 +33,17 @@ const Editor = () => {
             defaultLevel: 3,
           },
         },
-        code: Code,
         quote: {
           class: Quote,
           inlineToolbar: true,
         },
+        warning: Warning,
+        codeBox: codeBox,
         inlineCode: inlineCode,
         linkTool: linkTool,
+        delimiter: Delimiter,
         table: table,
-        raw: rawTool,
-        // image: simpleImage,
         embed: Embed,
-        image: {
-          class: imageTool,
-          config: {
-            endpoints: {
-              byFile: `${window.location.origin}/blogImgs`, // Your backend file uploader endpoint
-              byUrl: window.location.origin, // Your endpoint that provides uploading by Url
-            },
-          },
-        },
       },
     });
   };
@@ -62,9 +53,9 @@ const Editor = () => {
   }, []);
 
   return (
-    <>
-      <div id="editorjs">Editor</div>
-    </>
+    <div className="">
+      <div id="editorjs"></div>
+    </div>
   );
 };
 

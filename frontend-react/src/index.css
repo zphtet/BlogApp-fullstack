@@ -14,6 +14,12 @@ html {
   svg {
     @apply dark:text-white;
   }
+  #detail svg {
+    @apply dark:invert;
+  }
+  #detail table {
+    @apply dark:text-black;
+  }
   #detail thead tr th {
     @apply bg-theme text-white;
   }

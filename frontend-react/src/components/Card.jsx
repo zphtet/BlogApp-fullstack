@@ -3,6 +3,7 @@ import cardImg from "../assets/default-card.jpg";
 import authorImg from "../assets/author.jpg";
 import { BsBookmarkPlus, BsFillBookmarkPlusFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 // BsFillBookmarkPlusFill;
 const Card = ({ mine, saved }) => {
   return (
@@ -44,9 +45,14 @@ const Card = ({ mine, saved }) => {
             {saved ? (
               <BsFillBookmarkPlusFill className="cursor-pointer w-5 h-5 " />
             ) : mine ? (
-              ""
+              <>
+                <AiOutlineEdit className="cursor-pointer text-2xl" />
+                <AiOutlineDelete className="cursor-pointer text-2xl" />
+              </>
             ) : (
-              <BsBookmarkPlus className="cursor-pointer w-5 h-5 " />
+              <>
+                <BsBookmarkPlus className="cursor-pointer w-5 h-5 " />
+              </>
             )}
           </div>
         </div>

@@ -2,8 +2,8 @@ import React from "react";
 import authorImg from "../assets/author.jpg";
 import postImg from "../assets/default-card.jpg";
 import Output from "editorjs-react-renderer";
-const imgUrl =
-  "https://images.pexels.com/photos/17630330/pexels-photo-17630330/free-photo-of-snow-sea-landscape-beach.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
+// const imgUrl =
+//   "https://images.pexels.com/photos/17630330/pexels-photo-17630330/free-photo-of-snow-sea-landscape-beach.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
 const data = {
   time: 1564767102436,
   blocks: [
@@ -15,17 +15,34 @@ const data = {
       },
     },
     {
-      type: "image",
+      type: "header",
       data: {
-        file: {
-          url: imgUrl,
-        },
-        // caption: "Test Caption",
-        // withBorder: false,
-        // stretched: false,
-        // withBackground: false,
+        text: "Why Telegram is the best messenger",
+        level: 2,
       },
     },
+    {
+      type: "warning",
+      data: {
+        title: "Note:",
+        message:
+          "Avoid using this method just for lulz. It can be very dangerous opposite your daily fun stuff.",
+      },
+    },
+    {
+      type: "codeBox",
+      data: {
+        code: "consttest = newTest();.codeBoxTextArea{\n  width: 100%;\n  min-height: 30px;\n  padding: 10px;\n  border-radius: 2px 2px 2px 0;\n  border: none !important;\n  outline: none !important;\n  font: 14px monospace;\n}\n\n.codeBoxSelectDiv{\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: flex-start;\n  position: relative;\n}",
+        language: "css",
+        theme:
+          "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/atom-one-dark.min.css",
+      },
+    },
+    {
+      type: "delimiter",
+      data: {},
+    },
+
     {
       type: "paragraph",
       data: {
@@ -47,6 +64,18 @@ const data = {
   version: "2.14.0",
 };
 
+const style = {
+  table: {
+    table: {
+      marginBlock: "20px",
+    },
+    th: {
+      backgroundColor: "#6246EA",
+      color: "#fff",
+    },
+  },
+};
+
 const Detail = () => {
   return (
     <div
@@ -56,24 +85,28 @@ const Detail = () => {
       <h6 className="text-3xl font-bold">
         How To use React useEffect Efficiently in Application
       </h6>
-      <div className="mt-6 flex gap-5 text-base">
-        <div className="img-container">
-          <img
-            className="w-12 h-12 rounded-full object-cover"
-            src={authorImg}
-            alt="author image"
-          />
+      <div className="flex justify-between">
+        <div className="mt-6 flex gap-5 text-base">
+          <div className="img-container">
+            <img
+              className="w-12 h-12 rounded-full object-cover"
+              src={authorImg}
+              alt="author image"
+            />
+          </div>
+          <div>
+            <p className="font-bold">Tony Abraham</p>
+            <p>
+              01 jan 2023 .{" "}
+              <span className=" text-xs ml-2 rounded px-2 py-0 text-white  bg-[#9f74ed]">
+                7 min Read
+              </span>{" "}
+            </p>
+          </div>
         </div>
-        <div>
-          <p className="font-bold">Tony Abraham</p>
-          <p>
-            01 jan 2023 .{" "}
-            <span className=" text-xs ml-2 rounded px-2 py-0 text-white  bg-[#9f74ed]">
-              7 min Read
-            </span>{" "}
-          </p>
-        </div>
+        <button className="btn self-end">Unpublish</button>
       </div>
+
       <div className="">
         <img
           src={postImg}
@@ -89,7 +122,7 @@ const Detail = () => {
         obcaecati veritatis nobis, porro nihil nulla non, voluptatem eaque harum
         fugit iure deleniti impedit!
       </p>
-      <Output data={data} />
+      <Output data={data} style={style} />
     </div>
   );
 };
