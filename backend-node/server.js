@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const helmet = require("helmet");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 // IMPORT ROUTERS
 const postRouter = require("./routes/post.route");
@@ -11,7 +12,9 @@ const postRouter = require("./routes/post.route");
 const port = 3000;
 
 // JSON serialization
+app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname + "/images"));
 app.use(helmet());
 
 app.get("/", (req, res) => {

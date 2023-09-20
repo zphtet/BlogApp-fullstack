@@ -23,6 +23,9 @@ html {
   #detail thead tr th {
     @apply bg-theme text-white;
   }
+  .ce-header {
+    @apply text-3xl font-bold;
+  }
 }
 
 @layer components {

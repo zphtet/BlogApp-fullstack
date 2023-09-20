@@ -1,11 +1,15 @@
 import React from "react";
 import Editor from "./Editor";
 import Categroy from "../utils/Categroy";
+
+const url = "http://localhost:3000/api";
+
 const CreatePost = () => {
   const [title, setTitle] = React.useState("");
   const [photo, setPhoto] = React.useState("");
   const [category, setCategory] = React.useState("general");
   const [blogData, setBlogData] = React.useState("");
+  const [duration, setDuration] = React.useState(0);
   const titleHandler = (e) => {
     setTitle(e.target.value);
   };
@@ -15,10 +19,45 @@ const CreatePost = () => {
   const categoryHandler = (e) => {
     setCategory(e.target.value);
   };
-  const submitHandler = (e) => {
+  const durationHandler = (e) => {
+    setDuration(+e.target.value);
+  };
+  const submitHandler = async (e) => {
     e.preventDefault();
     console.log(title, photo, category);
     console.log(blogData);
+    let content = JSON.stringify(blogData);
+    console.log(content);
+    const fdata = new FormData();
+    fdata.append("title", title);
+    fdata.append("photo", photo);
+    fdata.append("category", category);
+    fdata.append("duration", duration);
+    fdata.append("blogData", content);
+
+    console.log(fdata);
+
+    const resp = await fetch(`${url}/posts`, {
+      method: "POST",
+      body: fdata,
+    });
+
+    // const resp = await fetch(`${url}/posts`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     title: title,
+    //     photo,
+    //     category: category,
+    //     blogData: blogData,
+    //     read: duration,
+    //   }),
+    // });
+
+    const data = await resp.json();
+    console.log(data);
   };
   return (
     <div className=" p-5 w-[min(100%,720px)] mx-auto ml:p-0">
@@ -47,22 +86,45 @@ const CreatePost = () => {
         </div>
 
         <Editor setData={setBlogData} />
-        <select
-          className="input"
-          value={category}
-          onChange={categoryHandler}
-          name="category"
-          id="category"
-          // defaultValue={"general"}
-        >
-          {Categroy.map((item, index) => {
-            return (
-              <option key={index} value={item}>
-                {item}
-              </option>
-            );
-          })}
-        </select>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="duration" className="">
+            Select category
+          </label>
+
+          <select
+            className="input"
+            value={category}
+            onChange={categoryHandler}
+            name="category"
+            id="category"
+            // defaultValue={"general"}
+          >
+            {Categroy.map((item, index) => {
+              return (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="duration" className="">
+            Read duration
+          </label>
+          <input
+            type="number"
+            id="duration"
+            value={duration}
+            onChange={durationHandler}
+            className="input"
+            min={1}
+            placeholder="read duration"
+          />
+        </div>
+
         <button className="btn">Publish</button>
       </form>
     </div>
