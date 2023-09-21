@@ -1,11 +1,7 @@
 const postModel = require("../model/post.model");
-
-async function createPost(req, res) {
+const AppError = require("../utils/AppError");
+async function createPost(req, res, next) {
   const { title, category, blogData } = req.body;
-  // console.log("req body", req.body);
-  // console.log("req file", req.filename);
-  // console.log("blog Data", JSON.parse(blogData));
-
   try {
     const resp = await postModel.create({
       title,
@@ -20,21 +16,21 @@ async function createPost(req, res) {
       data: resp,
     });
   } catch (err) {
-    console.log("🌋 Error Creating Post Doc", err);
+    next(new AppError("Error creating document", 500));
   }
 }
 
-async function getPostById(req, res) {
+async function getPostById(req, res, next) {
   const { id } = req.params;
-  console.log("post id", id);
   try {
     const data = await postModel.findById(id);
+
     res.status(200).json({
       status: "success",
       data,
     });
   } catch (err) {
-    console.log("Error geeting doc");
+    next(new AppError("Id is not valid", 404));
   }
 }
 

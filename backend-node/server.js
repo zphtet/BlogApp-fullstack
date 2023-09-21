@@ -4,6 +4,7 @@ const app = express();
 const helmet = require("helmet");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const globalErrorHandler = require("./utils/globalError");
 
 // IMPORT ROUTERS
 const postRouter = require("./routes/post.route");
@@ -11,6 +12,8 @@ const postRouter = require("./routes/post.route");
 // DEFAULT PORT
 const port = 3000;
 
+// env tile
+require("dotenv").config();
 // JSON serialization
 app.use(cors());
 app.use(express.json());
@@ -21,24 +24,27 @@ app.get("/", (req, res) => {
   res.send("This is my blog app backend endpoint");
 });
 
+console.log(process.env.NODE_ENV);
+
 // Routes
 
 app.use("/api/posts", postRouter);
 
-app.use((req, res, next) => {
-  const error = new Error("Not Found");
-  error.status = 404;
-  next(error);
+app.get("/err", (req, res) => {
+  throw new Error("Error Occured");
 });
+
+// Gloabl error handler
+app.use(globalErrorHandler);
 
 async function startServer() {
   try {
     await mongoose.connect(
-      "mongodb+srv://zinpainghtetadmin:blogapp215108@cluster0.n0bzo6v.mongodb.net/blogapp?retryWrites=true&w=majority"
+      `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@cluster0.n0bzo6v.mongodb.net/blogapp?retryWrites=true&w=majority`
     );
     console.log("Connected to MongoDB");
     app.listen(port, () => {
-      console.log(`Example app listening on port http://localhost:${port}`);
+      console.log(`app listening on port http://localhost:${port}`);
     });
   } catch (err) {
     console.log("Error Connecting to MongoDB", err);

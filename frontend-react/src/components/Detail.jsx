@@ -1,6 +1,7 @@
 import React from "react";
 import authorImg from "../assets/author.jpg";
 import Output from "editorjs-react-renderer";
+import PostSkeleton from "./PostSkeleton";
 
 const url = "http://localhost:3000/api";
 //   time: 1564767102436,
@@ -103,7 +104,7 @@ const Detail = () => {
   const [post, setPost] = React.useState(null);
 
   React.useEffect(() => {
-    fetch(`${url}/posts/650b0b97f8749f48d9abd2c1`)
+    fetch(`${url}/posts/650be301e9a8e7151d45cb41`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -112,7 +113,7 @@ const Detail = () => {
   }, []);
 
   // console.log(post)
-  if (!post) return <div>Loading ... </div>;
+  if (!post) return <PostSkeleton />;
   const imgUrl = `http://localhost:3000/${post.data.photo}`;
   return (
     <div
