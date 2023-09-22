@@ -32,6 +32,30 @@ async function deletAll(req, res) {
   }
 }
 
+async function getAllPosts(req, res, next) {
+  console.log(req.query);
+  const limit = 3;
+  const pageNum = req.query.page || 0;
+  try {
+    const data = await postModel
+      .find({ published: true })
+      .sort({ createdAt: "desc", _id: 1 })
+      .skip((pageNum - 1) * limit)
+      .limit(limit);
+
+    // .skip(3)
+    // .limit(3);
+
+    return res.status(200).json({
+      status: "success",
+      count: data.length,
+      data,
+    });
+  } catch (err) {
+    next(new AppError("Error fetching posts", err));
+  }
+}
+
 const getPostById = getOneById(postModel);
 const createPost = createDoc(postModel, "blogData");
 
@@ -39,4 +63,5 @@ module.exports = {
   createPost,
   getPostById,
   deletAll,
+  getAllPosts,
 };

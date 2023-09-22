@@ -4,15 +4,9 @@ const router = express.Router();
 const { uploadCoverPhoto } = require("../utils/multer");
 const { filterBody } = require("../middleware/filterBody");
 
-router.get("/", function (req, res) {
-  res.status(200).json({
-    status: "success",
-    data: "No data right now",
-  });
-});
-
 router
   .route("/")
+  .get(postController.getAllPosts)
   .post(
     uploadCoverPhoto,
     filterBody(["title", "category", "blogData", "photo", "duration"]),
