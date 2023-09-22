@@ -27,7 +27,6 @@ const CreatePost = () => {
     console.log(title, photo, category);
     console.log(blogData);
     let content = JSON.stringify(blogData);
-    console.log(content);
     const fdata = new FormData();
     fdata.append("title", title);
     fdata.append("photo", photo);
@@ -35,26 +34,10 @@ const CreatePost = () => {
     fdata.append("duration", duration);
     fdata.append("blogData", content);
 
-    console.log(fdata);
-
     const resp = await fetch(`${url}/posts`, {
       method: "POST",
       body: fdata,
     });
-
-    // const resp = await fetch(`${url}/posts`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     title: title,
-    //     photo,
-    //     category: category,
-    //     blogData: blogData,
-    //     read: duration,
-    //   }),
-    // });
 
     const data = await resp.json();
     console.log(data);

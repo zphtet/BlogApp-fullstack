@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
     const exten = file.mimetype.split("/")[1];
     const uniqueSuffix = Date.now() + "-postId";
     const filename = `${uniqueSuffix}.${exten}`;
-    req.filename = filename;
+    req.body.photo = filename;
     cb(null, filename);
   },
 });

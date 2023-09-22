@@ -15,12 +15,12 @@ const postSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  read: {
+  duration: {
     type: Number || String,
   },
   editedAt: { type: Date, default: Date.now() },
   // author: { type: mongoose.Schema.ObjectId, required: true },
-  published: { type: Boolean, required: true },
+  published: { type: Boolean, default: true },
   deleted: { type: Boolean, default: false },
 });
 

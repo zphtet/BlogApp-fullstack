@@ -104,7 +104,7 @@ const Detail = () => {
   const [post, setPost] = React.useState(null);
 
   React.useEffect(() => {
-    fetch(`${url}/posts/650be301e9a8e7151d45cb41`)
+    fetch(`${url}/posts/650d1c46322ca80afb3186aa`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -135,8 +135,8 @@ const Detail = () => {
             <p>
               01 jan 2023 .{" "}
               <span className=" text-xs ml-2 rounded px-2 py-0 text-white  bg-[#9f74ed]">
-                {post.data.read} min Read
-                {post.data.category}
+                {post.data.duration} min Read
+                {/* {post.data.category} */}
               </span>{" "}
             </p>
           </div>
