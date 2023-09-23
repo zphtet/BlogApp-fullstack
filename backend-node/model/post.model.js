@@ -5,6 +5,7 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
     minLength: 10,
+    unique: true,
   },
   photo: { type: String },
   category: { type: String, required: true },
@@ -22,6 +23,15 @@ const postSchema = new mongoose.Schema({
   // author: { type: mongoose.Schema.ObjectId, required: true },
   published: { type: Boolean, default: true },
   deleted: { type: Boolean, default: false },
+  slug: {
+    type: String,
+  },
+});
+
+// Document Middleware
+postSchema.pre("save", function (next) {
+  this.slug = this.title.toLowerCase().split(" ").join("-");
+  next();
 });
 
 // Export Model

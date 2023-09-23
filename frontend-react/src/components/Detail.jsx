@@ -2,7 +2,7 @@ import React from "react";
 import authorImg from "../assets/author.jpg";
 import Output from "editorjs-react-renderer";
 import PostSkeleton from "./PostSkeleton";
-
+import { useParams, Link } from "react-router-dom";
 const url = "http://localhost:3000/api";
 //   time: 1564767102436,
 //   blocks: [
@@ -102,9 +102,9 @@ const classes = {
 
 const Detail = () => {
   const [post, setPost] = React.useState(null);
-
+  const { slug } = useParams();
   React.useEffect(() => {
-    fetch(`${url}/posts/650d1c46322ca80afb3186aa`)
+    fetch(`${url}/posts/${slug}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -115,6 +115,12 @@ const Detail = () => {
   // console.log(post)
   if (!post) return <PostSkeleton />;
   const imgUrl = `http://localhost:3000/${post.data.photo}`;
+  const date = new Date(post?.data.createdAt);
+  const formatDate = date?.toLocaleString("en-US", {
+    month: "long",
+    year: "numeric",
+    day: "numeric",
+  });
   return (
     <div
       id="detail"
@@ -122,7 +128,7 @@ const Detail = () => {
     >
       <h6 className="text-3xl font-bold">{post.data.title}</h6>
       <div className="flex justify-between">
-        <div className="mt-6 flex gap-5 text-base">
+        <div className=" flex gap-5 text-base">
           <div className="img-container">
             <img
               className="w-12 h-12 rounded-full object-cover"
@@ -133,15 +139,17 @@ const Detail = () => {
           <div>
             <p className="font-bold">Tony Abraham</p>
             <p>
-              01 jan 2023 .{" "}
-              <span className=" text-xs ml-2 rounded px-2 py-0 text-white  bg-[#9f74ed]">
+              {formatDate}
+              <span className=" text-xs ml-2 rounded px-2  pb-0.5 text-white  bg-[#9f74ed]">
                 {post.data.duration} min Read
                 {/* {post.data.category} */}
               </span>{" "}
             </p>
           </div>
         </div>
-        <button className="btn self-end">Unpublish</button>
+        <Link to={"/editor"}>
+          <button className="btn self-end">Edit</button>
+        </Link>
       </div>
 
       <div className="">

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 // BsFillBookmarkPlusFill;
 const Card = ({ mine, saved, data }) => {
-  const { title, category, createdAt, duration } = data;
+  const { title, category, createdAt, duration, slug } = data;
   const date = new Date(createdAt);
   const formatDate = date.toLocaleString("en-US", {
     month: "long",
@@ -32,7 +32,7 @@ const Card = ({ mine, saved, data }) => {
           </div>
 
           <h3 className="text-2xl font-bold cursor-pointer ml:text-xl">
-            <Link to={"/posts/postid"}>{title}</Link>
+            <Link to={`/posts/${slug}`}>{title}</Link>
           </h3>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
@@ -62,7 +62,7 @@ const Card = ({ mine, saved, data }) => {
           </div>
         </div>
         <div className="post-img-container max-w-[150px] tb:hidden">
-          <Link to={"/posts/postid"}>
+          <Link to={`/posts/${slug}`}>
             <img className="cursor-pointer" src={cardImg} alt="post img" />
           </Link>
         </div>

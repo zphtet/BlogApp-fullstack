@@ -13,6 +13,7 @@ router
     postController.createPost
   )
   .delete(postController.deletAll);
-router.route("/:id").get(postController.getPostById);
+// router.route("/:id").get(postController.getPostById);
+router.route("/:slug").get(postController.getPostBySlug);
 
 module.exports = router;

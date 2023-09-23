@@ -35,3 +35,40 @@ exports.createDoc = (Model, parse) => {
     }
   };
 };
+
+exports.getAll = (Model) => {
+  return async (req, res, next) => {
+    // console.log(req.query);
+    const limit = 3;
+    const pageNum = req.query.page || 0;
+    const skipValue = (pageNum - 1) * limit > 0 ? (pageNum - 1) * limit : 0;
+    try {
+      const data = await Model.find({ published: true })
+        .sort({ createdAt: "desc", _id: 1 })
+        .skip(skipValue)
+        .limit(limit);
+
+      return res.status(200).json({
+        status: "success",
+        count: data.length,
+        data,
+      });
+    } catch (err) {
+      next(new AppError("Error fetching posts", err));
+    }
+  };
+};
+
+exports.getOneBySlug = (Model) => {
+  return async (req, res, next) => {
+    try {
+      const data = await Model.findOne({ slug: req.params.slug });
+      return res.status(200).json({
+        status: "success",
+        data,
+      });
+    } catch (err) {
+      next(new AppError("Error Fetching document By Slug"));
+    }
+  };
+};
