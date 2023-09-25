@@ -3,6 +3,7 @@ const initialState = {
   posts: [],
   currentPost: null,
   fetchDone: false,
+  editData: null,
 };
 export const PostContext = createContext();
 
@@ -13,6 +14,11 @@ const reducer = (state, action) => {
         ...state,
         posts: [...state.posts, ...action.payload],
       };
+    case "CLEAR_POSTS":
+      return {
+        ...state,
+        posts: [],
+      };
     case "SET_CURR_POST":
       return {
         ...state,
@@ -21,7 +27,18 @@ const reducer = (state, action) => {
     case "SET_FETCH_DONE":
       return {
         ...state,
-        fetchDone: true,
+        fetchDone: action.payload,
+      };
+
+    case "SET_EDIT_DATA":
+      return {
+        ...state,
+        editData: action.payload,
+      };
+    case "CLEAR_EDIT_DATA":
+      return {
+        ...state,
+        editData: null,
       };
     default:
       return {

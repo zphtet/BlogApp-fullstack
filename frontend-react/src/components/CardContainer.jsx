@@ -29,7 +29,7 @@ const CardContainer = () => {
     const resp = await fetch(`http://localhost:3000/api/posts?page=${pageNum}`);
     const data = await resp.json();
     if (data.count < 5) {
-      dispatch({ type: "SET_FETCH_DONE" });
+      dispatch({ type: "SET_FETCH_DONE", payload: true });
     }
 
     // dispatch((prev) => [...prev, ...data.data]);

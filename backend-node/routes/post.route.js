@@ -14,6 +14,9 @@ router
   )
   .delete(postController.deletAll);
 // router.route("/:id").get(postController.getPostById);
-router.route("/:slug").get(postController.getPostBySlug);
+router
+  .route("/:slug")
+  .get(postController.getPostBySlug)
+  .patch(uploadCoverPhoto, postController.updatePostBySlug);
 
 module.exports = router;

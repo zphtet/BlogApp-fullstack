@@ -26,7 +26,7 @@ exports.createDoc = (Model, parse) => {
     }
     try {
       const resp = await Model.create(createObj);
-      return res.status(200).json({
+      return res.status(201).json({
         status: "success",
         data: resp,
       });
@@ -69,6 +69,31 @@ exports.getOneBySlug = (Model) => {
       });
     } catch (err) {
       next(new AppError("Error Fetching document By Slug"));
+    }
+  };
+};
+
+exports.updateOneBySlug = (Model, parse) => {
+  return async (req, res, next) => {
+    try {
+      const updateObj = {
+        ...req.body,
+      };
+
+      if (parse) {
+        updateObj[parse] = JSON.parse(updateObj[parse]);
+      }
+
+      const data = await Model.updateOne(
+        { slug: req.params.slug },
+        { ...updateObj }
+      );
+      return res.status(200).json({
+        status: "success",
+        data,
+      });
+    } catch (err) {
+      next(new AppError("Error Updationg Documnet"));
     }
   };
 };

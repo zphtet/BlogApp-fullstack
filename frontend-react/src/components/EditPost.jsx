@@ -1,15 +1,53 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Editor from "./Editor";
 import Categroy from "../utils/Categroy";
 
+import { useParams } from "react-router-dom";
+import { PostContext } from "../Context/postContext";
+
 const url = "http://localhost:3000/api";
 
-const CreatePost = () => {
+const EditPost = () => {
+  const { slug } = useParams();
   const [title, setTitle] = React.useState("");
   const [photo, setPhoto] = React.useState("");
   const [category, setCategory] = React.useState("general");
-  const [blogData, setBlogData] = React.useState("");
+  const [blogData, setBlogData] = React.useState({});
   const [duration, setDuration] = React.useState(0);
+  //   const [id, setId] = React.useState(null);
+  const {
+    state: { posts, editData },
+    dispatch,
+  } = useContext(PostContext);
+
+  const setAllData = (editPost) => {
+    setTitle(editPost.title);
+    setBlogData(editPost.blogData);
+    setDuration(editPost.duration);
+    setCategory(editPost.category);
+    setPhoto(editPost.photo);
+  };
+
+  const findPost = (posts) => {
+    const editPost = posts.find((post) => post.slug === slug);
+    if (editPost) {
+      console.log(editPost);
+      setAllData(editPost);
+      dispatch({ type: "SET_EDIT_DATA", payload: editPost });
+      return true;
+    }
+    return false;
+  };
+
+  const fetchPost = () => {
+    fetch(`${url}/posts/${slug}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.data);
+        setAllData(data.data);
+        dispatch({ type: "SET_EDIT_DATA", payload: data.data });
+      });
+  };
 
   const titleHandler = (e) => {
     setTitle(e.target.value);
@@ -25,7 +63,7 @@ const CreatePost = () => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(title, photo, category);
+    console.log(title, photo, category, duration);
     console.log(blogData);
     let content = JSON.stringify(blogData);
     const fdata = new FormData();
@@ -35,14 +73,30 @@ const CreatePost = () => {
     fdata.append("duration", duration);
     fdata.append("blogData", content);
 
-    const resp = await fetch(`${url}/posts`, {
-      method: "POST",
+    const resp = await fetch(`${url}/posts/${slug}`, {
+      method: "PATCH",
       body: fdata,
     });
 
     const data = await resp.json();
-    console.log(data);
+    if (data.status === "success") {
+      dispatch({ type: "SET_FETCH_DONE", payload: false });
+      dispatch({ type: "CLEAR_POSTS" });
+    }
   };
+
+  useEffect(() => {
+    if (findPost(posts)) return;
+    fetchPost();
+  }, [slug, posts]);
+
+  if (!editData)
+    return (
+      <div className=" p-5 w-[min(100%,720px)] mx-auto ml:p-0">
+        Loading ....{" "}
+      </div>
+    );
+
   return (
     <div className=" p-5 w-[min(100%,720px)] mx-auto ml:p-0">
       <form className="flex flex-col gap-5" onSubmit={submitHandler}>
@@ -64,12 +118,11 @@ const CreatePost = () => {
             id="cover-photo"
             placeholder="Post cover photo"
             name="cover-photo"
-            // value={photo}
             onChange={photoHandler}
           />
         </div>
 
-        <Editor setData={setBlogData} />
+        <Editor setData={setBlogData} currentData={blogData} />
 
         <div className="flex flex-col gap-1">
           <label htmlFor="duration" className="">
@@ -109,10 +162,10 @@ const CreatePost = () => {
           />
         </div>
 
-        <button className="btn">Publish</button>
+        <button className="btn">Update</button>
       </form>
     </div>
   );
 };
 
-export default CreatePost;
+export default EditPost;

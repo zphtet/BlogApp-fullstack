@@ -14,7 +14,7 @@ import Card from "./components/Card.jsx";
 import SavedPosts from "./components/SavedPosts.jsx";
 import Other from "./components/Other.jsx";
 import CreatePost from "./components/CreatePost.jsx";
-
+import EditPost from "./components/EditPost.jsx";
 import { PostContextProvider } from "./Context/postContext.jsx";
 
 const router = createBrowserRouter([
@@ -34,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/editor",
         element: <CreatePost />,
+      },
+      {
+        path: "/editpost/:slug",
+        element: <EditPost />,
       },
       {
         path: "/posts/:slug",

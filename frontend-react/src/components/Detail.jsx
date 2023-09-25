@@ -169,7 +169,7 @@ const Detail = () => {
             </p>
           </div>
         </div>
-        <Link to={"/editor"}>
+        <Link to={`/editpost/${slug}`}>
           <button className="btn self-end">Edit</button>
         </Link>
       </div>
