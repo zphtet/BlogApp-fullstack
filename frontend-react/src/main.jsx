@@ -13,9 +13,10 @@ import Login from "./components/Login.jsx";
 import Card from "./components/Card.jsx";
 import SavedPosts from "./components/SavedPosts.jsx";
 import Other from "./components/Other.jsx";
-// import EditorCom from "./components/Editor.jsx";
-import Editor from "./components/Editor.jsx";
 import CreatePost from "./components/CreatePost.jsx";
+
+import { PostContextProvider } from "./Context/postContext.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -66,7 +67,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
   <ThemeProvider>
-    <RouterProvider router={router} />
+    <PostContextProvider>
+      <RouterProvider router={router} />
+    </PostContextProvider>
   </ThemeProvider>
   // </React.StrictMode>
 );

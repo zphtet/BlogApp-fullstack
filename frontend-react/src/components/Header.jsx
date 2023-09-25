@@ -10,6 +10,7 @@ const Header = () => {
   const { state, dispatch } = useContext(themeContext);
   // const navigate = useNavigate();
   const modeHandler = () => {
+    // alert("Hello");
     if (state === "light") dispatch({ type: "DARK" });
     if (state === "dark") dispatch({ type: "LIGHT" });
   };

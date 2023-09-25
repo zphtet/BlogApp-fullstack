@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import authorImg from "../assets/author.jpg";
 import Output from "editorjs-react-renderer";
 import PostSkeleton from "./PostSkeleton";
 import { useParams, Link } from "react-router-dom";
+import { PostContext } from "../Context/postContext";
 const url = "http://localhost:3000/api";
 //   time: 1564767102436,
 //   blocks: [
@@ -101,21 +102,42 @@ const classes = {
 };
 
 const Detail = () => {
-  const [post, setPost] = React.useState(null);
+  // const [post, setPost] = React.useState(null);
   const { slug } = useParams();
-  React.useEffect(() => {
+
+  const {
+    state: { currentPost, posts },
+    dispatch,
+  } = useContext(PostContext);
+
+  const selectPost = (posts) => {
+    return posts.find((post) => post.slug === slug);
+  };
+
+  const fetchPost = () => {
     fetch(`${url}/posts/${slug}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        setPost(data);
+        // console.log(data);
+        dispatch({ type: "SET_CURR_POST", payload: data.data });
+        // setPost(data);
       });
-  }, []);
+  };
+
+  React.useEffect(() => {
+    const selectedPost = selectPost(posts);
+    if (selectedPost) {
+      dispatch({ type: "SET_CURR_POST", payload: selectedPost });
+      return;
+    }
+
+    fetchPost();
+  }, [slug, dispatch]);
 
   // console.log(post)
-  if (!post) return <PostSkeleton />;
-  const imgUrl = `http://localhost:3000/${post.data.photo}`;
-  const date = new Date(post?.data.createdAt);
+  if (!currentPost) return <PostSkeleton />;
+  const imgUrl = `http://localhost:3000/${currentPost.photo}`;
+  const date = new Date(currentPost?.createdAt);
   const formatDate = date?.toLocaleString("en-US", {
     month: "long",
     year: "numeric",
@@ -126,7 +148,7 @@ const Detail = () => {
       id="detail"
       className="w-[min(800px,100%)] mx-auto [&>*:not(:last-child)]:mb-5 "
     >
-      <h6 className="text-3xl font-bold">{post.data.title}</h6>
+      <h6 className="text-3xl font-bold">{currentPost.title}</h6>
       <div className="flex justify-between">
         <div className=" flex gap-5 text-base">
           <div className="img-container">
@@ -141,7 +163,7 @@ const Detail = () => {
             <p>
               {formatDate}
               <span className=" text-xs ml-2 rounded px-2  pb-0.5 text-white  bg-[#9f74ed]">
-                {post.data.duration} min Read
+                {currentPost.duration} min Read
                 {/* {post.data.category} */}
               </span>{" "}
             </p>
@@ -168,7 +190,12 @@ const Detail = () => {
         obcaecati veritatis nobis, porro nihil nulla non, voluptatem eaque harum
         fugit iure deleniti impedit!
       </p> */}
-      <Output data={post.data.blogData} style={style} classNames={classes} />
+      <Output data={currentPost.blogData} style={style} classNames={classes} />
+      <div className="button-container flex justify-end">
+        <Link to={"/"}>
+          <button className="btn">To Home</button>
+        </Link>
+      </div>
     </div>
   );
 };

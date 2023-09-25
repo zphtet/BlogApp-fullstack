@@ -1,22 +1,25 @@
 import React from "react";
-import cardImg from "../assets/default-card.jpg";
 import authorImg from "../assets/author.jpg";
 import { BsBookmarkPlus, BsFillBookmarkPlusFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { ParagraphOutput } from "editorjs-react-renderer";
 // BsFillBookmarkPlusFill;
 const Card = ({ mine, saved, data }) => {
-  const { title, category, createdAt, duration, slug } = data;
+  const { title, category, createdAt, duration, slug, photo, blogData } = data;
   const date = new Date(createdAt);
   const formatDate = date.toLocaleString("en-US", {
     month: "long",
     year: "numeric",
     day: "numeric",
   });
+  const photoUrl = `http://localhost:3000/${photo}`;
+  const paragraph = blogData?.blocks.find(({ type }) => type === "paragraph");
+  console.log(paragraph);
   return (
     <div className="post px-5 dark:text-white ml:px-0">
       <div className="pb-3 border-b border-dgray flex gap-10 tb:gap-4  items-center justify-between">
-        <div className=" flex flex-col gap-2 ">
+        <div className=" flex flex-col gap-1 ">
           <div className={`flex  items-center gap-2 ${mine && "hidden"}`}>
             <div className="w-10 h-10 rounded-full overflow-hidden ">
               <img
@@ -31,17 +34,18 @@ const Card = ({ mine, saved, data }) => {
             <p className="post-date text-sm text-dgray ">{formatDate}</p>
           </div>
 
-          <h3 className="text-2xl font-bold cursor-pointer ml:text-xl">
+          <h3 className="text-2xl font-bold cursor-pointer ml:text-xl pb-0">
             <Link to={`/posts/${slug}`}>{title}</Link>
           </h3>
-          <p>
+          {/* <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
             nostrum rerum vero, facilis odio illum sit, ad neque maiores Lorem
             ipsum dolor sit amet consectetur adipisicing elit. Enim nostrum
             rerum vero, facilis odio illum sit, ad neque maiores Lorem ipsum
             dolor sit amet consectetur adipisicing elit. Enim nostrum rerum
             vero, facilis odio illum sit, ad neque maiores
-          </p>
+          </p> */}
+          <ParagraphOutput data={paragraph.data} />
           <div className="text-xs flex gap-5 items-center">
             <p className="category  pb-1 px-3 text-white rounded-xl bg-theme">
               {category}
@@ -63,7 +67,7 @@ const Card = ({ mine, saved, data }) => {
         </div>
         <div className="post-img-container max-w-[150px] tb:hidden">
           <Link to={`/posts/${slug}`}>
-            <img className="cursor-pointer" src={cardImg} alt="post img" />
+            <img className="cursor-pointer" src={photoUrl} alt="post img" />
           </Link>
         </div>
       </div>

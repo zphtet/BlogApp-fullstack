@@ -9,7 +9,7 @@ router
   .get(postController.getAllPosts)
   .post(
     uploadCoverPhoto,
-    filterBody(["title", "category", "blogData", "photo", "duration"]),
+    // filterBody(["title", "category", "blogData", "photo", "duration"]),
     postController.createPost
   )
   .delete(postController.deletAll);

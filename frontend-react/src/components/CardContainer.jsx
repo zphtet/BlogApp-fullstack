@@ -1,24 +1,39 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "./Card";
 import CardSkeleton from "./CardSkeleton";
+import { PostContext } from "../Context/postContext";
 const CardContainer = () => {
   const [loading, setLoading] = React.useState(true);
-  const [posts, setPosts] = React.useState([]);
+  // const [posts, setPosts] = React.useState([]);
   let [pageNumber, setPageNumber] = React.useState(1);
-  const [done, setDone] = React.useState(false);
+  // const [done, setDone] = React.useState(false);
   const [fetching, setFetching] = React.useState(false);
+
+  const {
+    state: { posts, fetchDone },
+    dispatch,
+  } = useContext(PostContext);
+
+  const wait = (sec) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("done");
+      }, sec * 1000);
+    });
+  };
 
   async function fetchData(pageNum) {
     setFetching(true);
+    await wait(3);
     console.log("Page Numbner form fun", pageNum);
     const resp = await fetch(`http://localhost:3000/api/posts?page=${pageNum}`);
     const data = await resp.json();
-    console.log(data.data);
-    if (data.count === 0) {
-      setDone(true);
+    if (data.count < 5) {
+      dispatch({ type: "SET_FETCH_DONE" });
     }
 
-    setPosts((prev) => [...prev, ...data.data]);
+    // dispatch((prev) => [...prev, ...data.data]);
+    dispatch({ type: "SET_POSTS", payload: data.data });
     setLoading(false);
     setFetching(false);
     console.log("Fetched ALL POSTS");
@@ -36,11 +51,13 @@ const CardContainer = () => {
     setPageNumber((prev) => prev + 1);
   };
   React.useEffect(() => {
+    if (fetchDone) return;
+
     fetchData(pageNumber);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pageNumber]);
-  if (loading)
+  if (loading && posts.length <= 0)
     return (
       <div className="card-container">
         <CardSkeleton />
@@ -53,12 +70,13 @@ const CardContainer = () => {
       {posts?.map((post) => (
         <Card data={post} key={`${post._id}-${Date.now()}`} />
       ))}
-      {/* {!done && (
-        <div className="p-5">
-          <p>fetching more ... </p>
+      {!fetchDone && fetching && (
+        <div className="px-5">
+          <p>Fetching more ... </p>
         </div>
-      )}*/}
-      {done && (
+      )}
+
+      {fetchDone && (
         <div className="p-5">
           <p className="bg-theme text-white p-2 rounded">All Posts Loaded</p>
         </div>

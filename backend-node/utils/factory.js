@@ -39,7 +39,7 @@ exports.createDoc = (Model, parse) => {
 exports.getAll = (Model) => {
   return async (req, res, next) => {
     // console.log(req.query);
-    const limit = 3;
+    const limit = 5;
     const pageNum = req.query.page || 0;
     const skipValue = (pageNum - 1) * limit > 0 ? (pageNum - 1) * limit : 0;
     try {
