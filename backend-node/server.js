@@ -8,6 +8,7 @@ const globalErrorHandler = require("./utils/globalError");
 
 // IMPORT ROUTERS
 const postRouter = require("./routes/post.route");
+const authRouter = require("./routes/auth.route");
 
 // DEFAULT PORT
 const port = 3000;
@@ -24,10 +25,9 @@ app.get("/", (req, res) => {
   res.send("This is my blog app backend endpoint");
 });
 
-console.log(process.env.NODE_ENV);
-
 // Routes
 
+app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
 
 app.get("/err", (req, res) => {

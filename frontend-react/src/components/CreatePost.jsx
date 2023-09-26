@@ -64,6 +64,7 @@ const CreatePost = () => {
             id="cover-photo"
             placeholder="Post cover photo"
             name="cover-photo"
+            accept="image/*"
             // value={photo}
             onChange={photoHandler}
           />

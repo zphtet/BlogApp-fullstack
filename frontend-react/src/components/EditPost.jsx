@@ -34,7 +34,8 @@ const EditPost = () => {
       console.log(editPost);
       setAllData(editPost);
       dispatch({ type: "SET_EDIT_DATA", payload: editPost });
-      return true;
+      // return true;  true to later
+      return false;
     }
     return false;
   };
@@ -88,7 +89,10 @@ const EditPost = () => {
   useEffect(() => {
     if (findPost(posts)) return;
     fetchPost();
-  }, [slug, posts]);
+    return () => {
+      dispatch({ type: "CLEAR_EDIT_DATA" });
+    };
+  }, [slug]);
 
   if (!editData)
     return (
@@ -115,6 +119,7 @@ const EditPost = () => {
           <input
             className="input cursor-pointer"
             type="file"
+            accept="image/*"
             id="cover-photo"
             placeholder="Post cover photo"
             name="cover-photo"

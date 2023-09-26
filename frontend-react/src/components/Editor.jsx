@@ -12,12 +12,13 @@ import Delimiter from "@editorjs/delimiter";
 
 const Editor = ({ setData, currentData }) => {
   console.log(currentData);
+  console.count("editor rendered");
   const editorRef = React.useRef();
   const initEditor = () => {
     const editor = new EditorJS({
       holder: "editorjs",
       onChange: async () => {
-        const data = await editor.saver.save();
+        const data = await editor?.saver?.save();
         // console.log(data);
         setData(data);
       },

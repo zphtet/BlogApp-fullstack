@@ -14,22 +14,23 @@ const CardContainer = () => {
     dispatch,
   } = useContext(PostContext);
 
-  const wait = (sec) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("done");
-      }, sec * 1000);
-    });
-  };
+  // const wait = (sec) => {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       resolve("done");
+  //     }, sec * 1000);
+  //   });
+  // };
 
   async function fetchData(pageNum) {
     setFetching(true);
-    await wait(3);
+    // await wait(3);
     console.log("Page Numbner form fun", pageNum);
     const resp = await fetch(`http://localhost:3000/api/posts?page=${pageNum}`);
     const data = await resp.json();
     if (data.count < 5) {
       dispatch({ type: "SET_FETCH_DONE", payload: true });
+      // dispatch({ type: "SET_POSTS", payload: data.data });
     }
 
     // dispatch((prev) => [...prev, ...data.data]);
