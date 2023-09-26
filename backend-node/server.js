@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const globalErrorHandler = require("./utils/globalError");
+const cookieParser = require("cookie-parser");
 
 // IMPORT ROUTERS
 const postRouter = require("./routes/post.route");
@@ -16,6 +17,7 @@ const port = 3000;
 // env tile
 require("dotenv").config();
 // JSON serialization
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname + "/images"));
@@ -26,6 +28,11 @@ app.get("/", (req, res) => {
 });
 
 // Routes
+
+app.use((req, res, next) => {
+  console.log(req.cookies);
+  next();
+});
 
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);

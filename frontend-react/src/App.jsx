@@ -14,19 +14,7 @@ function App() {
       <Toaster />
       <div className="min-h-screen dark:bg-dark dark:text-white">
         <Header />
-        {/* <button
-          className="btn"
-          onClick={() =>
-            toast.success("this is toast message", {
-              iconTheme: {
-                primary: "#6246EA",
-                secondary: "#fff",
-              },
-            })
-          }
-        >
-          Click me
-        </button> */}
+
         <div className="max-w-container mx-auto p-5">
           {/* <RouterProvider router={router} /> */}
           {/* <CardContainer /> */}

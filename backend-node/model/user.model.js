@@ -29,6 +29,13 @@ const userSchema = new mongoose.Schema({
     type: "string",
     default: "default.jpg",
   },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
+  // changedAt: {
+  //   type: Date,
+  // },
 });
 
 // Document Middleware
