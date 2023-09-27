@@ -2,8 +2,9 @@ import React, { useContext, useEffect } from "react";
 import Editor from "./Editor";
 import Categroy from "../utils/Categroy";
 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { PostContext } from "../Context/postContext";
+import { errorToast, successToast } from "../utils/toast";
 
 const url = "http://localhost:3000/api";
 
@@ -15,6 +16,7 @@ const EditPost = () => {
   const [blogData, setBlogData] = React.useState({});
   const [duration, setDuration] = React.useState(0);
   //   const [id, setId] = React.useState(null);
+  const navigate = useNavigate();
   const {
     state: { posts, editData },
     dispatch,
@@ -41,7 +43,9 @@ const EditPost = () => {
   };
 
   const fetchPost = () => {
-    fetch(`${url}/posts/${slug}`)
+    fetch(`${url}/posts/${slug}`, {
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log(data.data);
@@ -75,14 +79,22 @@ const EditPost = () => {
     fdata.append("blogData", content);
 
     const resp = await fetch(`${url}/posts/${slug}`, {
+      credentials: "include",
       method: "PATCH",
       body: fdata,
     });
 
     const data = await resp.json();
+    console.log(data);
+    if (data.status === "error") {
+      errorToast(data.message);
+      return;
+    }
     if (data.status === "success") {
       dispatch({ type: "SET_FETCH_DONE", payload: false });
       dispatch({ type: "CLEAR_POSTS" });
+      successToast("Successfully Edited");
+      navigate("/");
     }
   };
 

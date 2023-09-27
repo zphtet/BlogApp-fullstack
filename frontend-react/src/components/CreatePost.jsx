@@ -36,6 +36,7 @@ const CreatePost = () => {
     fdata.append("blogData", content);
 
     const resp = await fetch(`${url}/posts`, {
+      credentials: "include",
       method: "POST",
       body: fdata,
     });

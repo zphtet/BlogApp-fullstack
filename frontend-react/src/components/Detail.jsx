@@ -115,7 +115,9 @@ const Detail = () => {
   };
 
   const fetchPost = () => {
-    fetch(`${url}/posts/${slug}`)
+    fetch(`${url}/posts/${slug}`, {
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);

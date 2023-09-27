@@ -18,7 +18,12 @@ const CardContainer = () => {
     setFetching(true);
 
     console.log("Page Numbner form fun", pageNum);
-    const resp = await fetch(`http://localhost:3000/api/posts?page=${pageNum}`);
+    const resp = await fetch(
+      `http://localhost:3000/api/posts?page=${pageNum}`,
+      {
+        credentials: "include",
+      }
+    );
     const data = await resp.json();
 
     if (data.count < 5) {

@@ -3,7 +3,7 @@ const postController = require("../controller/post.controller");
 const router = express.Router();
 const { uploadCoverPhoto } = require("../utils/multer");
 const { filterBody } = require("../middleware/filterBody");
-
+const isLoggedIn = require("../middleware/isLoggedIn");
 router
   .route("/")
   .get(postController.getAllPosts)
@@ -17,6 +17,6 @@ router
 router
   .route("/:slug")
   .get(postController.getPostBySlug)
-  .patch(uploadCoverPhoto, postController.updatePostBySlug);
+  .patch(isLoggedIn, uploadCoverPhoto, postController.updatePostBySlug);
 
 module.exports = router;

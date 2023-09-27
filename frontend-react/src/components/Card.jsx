@@ -15,7 +15,7 @@ const Card = ({ mine, saved, data }) => {
   });
   const photoUrl = `http://localhost:3000/${photo}`;
   const paragraph = blogData?.blocks.find(({ type }) => type === "paragraph");
-  console.log(paragraph);
+  // console.log(paragraph);
   return (
     <div className="post px-5 dark:text-white ml:px-0">
       <div className="pb-3 border-b border-dgray flex gap-10 tb:gap-4  items-center justify-between">
