@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { ParagraphOutput } from "editorjs-react-renderer";
 // BsFillBookmarkPlusFill;
+import { errorToast, successToast } from "../utils/toast";
+import useNavi from "../Hook/useNavi";
 const Card = ({ mine, saved, data }) => {
+  const navigate = useNavi();
   const {
     title,
     category,
@@ -14,6 +17,7 @@ const Card = ({ mine, saved, data }) => {
     photo,
     blogData,
     author,
+    _id,
   } = data;
   const date = new Date(createdAt);
   const formatDate = date.toLocaleString("en-US", {
@@ -25,6 +29,20 @@ const Card = ({ mine, saved, data }) => {
   const profileUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${
     author.profile
   }`;
+
+  const deleteHandler = async () => {
+    const url = import.meta.env.VITE_BACKEND_URL;
+    try {
+      await fetch(`${url}/posts/delete/${_id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      successToast("Delete post successfully ☑");
+    } catch (err) {
+      errorToast("Error deleting post 🔥");
+    }
+  };
 
   const paragraph = blogData?.blocks.find(({ type }) => type === "paragraph");
   // console.log(paragraph);
@@ -67,8 +85,14 @@ const Card = ({ mine, saved, data }) => {
               <BsFillBookmarkPlusFill className="cursor-pointer w-5 h-5 " />
             ) : mine ? (
               <>
-                <AiOutlineEdit className="cursor-pointer text-2xl" />
-                <AiOutlineDelete className="cursor-pointer text-2xl" />
+                <AiOutlineEdit
+                  className="cursor-pointer text-2xl"
+                  onClick={() => navigate(`/editpost/${slug}`)}
+                />
+                <AiOutlineDelete
+                  onClick={deleteHandler}
+                  className="cursor-pointer text-2xl"
+                />
               </>
             ) : (
               <>

@@ -16,7 +16,7 @@ import EditPost from "./components/EditPost.jsx";
 import Profile from "./components/Profile.jsx";
 import { PostContextProvider } from "./Context/postContext.jsx";
 import { UserContextProvider } from "./Context/userContext.jsx";
-
+import { MyPostContextProvider } from "./Context/myPostContext.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -73,7 +73,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <ThemeProvider>
     <UserContextProvider>
       <PostContextProvider>
-        <RouterProvider router={router} />
+        <MyPostContextProvider>
+          <RouterProvider router={router} />
+        </MyPostContextProvider>
       </PostContextProvider>
     </UserContextProvider>
   </ThemeProvider>

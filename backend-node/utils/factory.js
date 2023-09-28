@@ -83,9 +83,11 @@ exports.getOneBySlug = (Model, populate) => {
 
 exports.updateOneBySlug = (Model, parse) => {
   return async (req, res, next) => {
+    const slug = req.body.title.toLowerCase().split(" ").join("-");
     try {
       const updateObj = {
         ...req.body,
+        slug,
       };
 
       if (parse) {
@@ -102,6 +104,21 @@ exports.updateOneBySlug = (Model, parse) => {
       });
     } catch (err) {
       next(new AppError("Error Updationg Documnet"));
+    }
+  };
+};
+
+exports.deleteOneById = (Model) => {
+  return async (req, res, next) => {
+    const { id } = req.params;
+    try {
+      const data = await Model.deleteOne({ _id: id });
+      return res.status(200).json({
+        status: "success",
+        data,
+      });
+    } catch (err) {
+      return next(new AppError("Delete failed: " + err.message));
     }
   };
 };

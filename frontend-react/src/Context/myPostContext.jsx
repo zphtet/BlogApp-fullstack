@@ -5,7 +5,7 @@ const initialState = {
   fetchDone: false,
   editData: null,
 };
-export const PostContext = createContext();
+export const MyPostContext = createContext();
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -47,11 +47,11 @@ const reducer = (state, action) => {
   }
 };
 
-export const PostContextProvider = ({ children }) => {
+export const MyPostContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
-    <PostContext.Provider value={{ state, dispatch }}>
+    <MyPostContext.Provider value={{ state, dispatch }}>
       {children}
-    </PostContext.Provider>
+    </MyPostContext.Provider>
   );
 };

@@ -17,7 +17,7 @@ router
     postController.createPost
   )
   .delete(postController.deletAll);
-// router.route("/:id").get(postController.getPostById);
+router.route("/delete/:id").delete(postController.deleteById);
 
 router.route("/getmyposts").get(isLoggedIn, postController.getMyPosts);
 router

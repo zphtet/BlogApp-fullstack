@@ -1,30 +1,27 @@
 import React, { useContext } from "react";
 import Card from "./Card";
 import CardSkeleton from "./CardSkeleton";
-import { PostContext } from "../Context/postContext";
-const CardContainer = () => {
+import { MyPostContext } from "../Context/myPostContext.jsx";
+const MyPostContainer = () => {
   const [loading, setLoading] = React.useState(true);
   // const [posts, setPosts] = React.useState([]);
   let [pageNumber, setPageNumber] = React.useState(1);
   // const [done, setDone] = React.useState(false);
   const [fetching, setFetching] = React.useState(false);
 
+  const url = import.meta.env.VITE_BACKEND_URL;
+
   const {
     state: { posts, fetchDone },
     dispatch,
-  } = useContext(PostContext);
+  } = useContext(MyPostContext);
 
   async function fetchData(pageNum) {
-    console.log("fetch data");
+    console.log("fetch data mypostcontainer");
     setFetching(true);
-
-    console.log("Page Numbner form fun", pageNum);
-    const resp = await fetch(
-      `http://localhost:3000/api/posts?page=${pageNum}`,
-      {
-        credentials: "include",
-      }
-    );
+    const resp = await fetch(`${url}/posts/getmyposts?page=${pageNum}`, {
+      credentials: "include",
+    });
     const data = await resp.json();
     console.log(data);
     if (data?.count < 5) {
@@ -49,11 +46,17 @@ const CardContainer = () => {
     setPageNumber((prev) => prev + 1);
   };
   React.useEffect(() => {
+    console.log("USER EFFECT FROM MYPOSTCONTAINER WORKING");
+    console.log("fetchDone", fetchDone);
     if (fetchDone) return;
 
     fetchData(pageNumber);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      dispatch({ type: "SET_FETCH_DONE", payload: false });
+      dispatch({ type: "CLEAR_POSTS" });
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [pageNumber]);
   if (loading && fetching)
     return (
@@ -72,10 +75,12 @@ const CardContainer = () => {
   //        <CardSkeleton />
   //      </div>
   //    );
+
+  console.log("MY-POST_CONTSINER RENDER");
   return (
     <div className="card-container ">
       {posts?.map((post) => (
-        <Card data={post} key={`${post._id}-${Date.now()}`} />
+        <Card data={post} key={`${post._id}-${Date.now()}`} mine dispatch />
       ))}
       {!fetchDone && fetching && (
         <div className="px-5">
@@ -83,13 +88,13 @@ const CardContainer = () => {
         </div>
       )}
 
-      {fetchDone && (
+      {/* {fetchDone && (
         <div className="p-5">
           <p className="bg-theme text-white p-2 rounded">All Posts Loaded</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
 
-export default CardContainer;
+export default MyPostContainer;

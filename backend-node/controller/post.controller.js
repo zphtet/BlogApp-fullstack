@@ -6,6 +6,7 @@ const {
   getAll,
   getOneBySlug,
   updateOneBySlug,
+  deleteOneById,
 } = require("../utils/factory");
 
 async function deletAll(req, res) {
@@ -25,7 +26,8 @@ const createPost = createDoc(postModel, "blogData");
 const getAllPosts = getAll(postModel, "author");
 const getPostBySlug = getOneBySlug(postModel, "author");
 const updatePostBySlug = updateOneBySlug(postModel, "blogData");
-const getMyPosts = getAll(postModel, "", "_id");
+const getMyPosts = getAll(postModel, "author", "_id");
+const deleteById = deleteOneById(postModel);
 module.exports = {
   createPost,
   getPostById,
@@ -34,4 +36,5 @@ module.exports = {
   getPostBySlug,
   updatePostBySlug,
   getMyPosts,
+  deleteById,
 };
