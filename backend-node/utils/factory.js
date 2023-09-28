@@ -21,6 +21,8 @@ exports.createDoc = (Model, parse) => {
       ...req.body,
     };
 
+    console.log(createObj, "from create");
+
     if (parse) {
       createObj[parse] = JSON.parse(createObj[parse]);
     }
@@ -36,14 +38,18 @@ exports.createDoc = (Model, parse) => {
   };
 };
 
-exports.getAll = (Model) => {
+exports.getAll = (Model, populate, queryBy) => {
   return async (req, res, next) => {
+    let query = {};
+    if (queryBy) query.author = req.user[queryBy];
     // console.log(req.query);
+    console.log({ published: true, ...query });
     const limit = 5;
     const pageNum = req.query.page || 0;
     const skipValue = (pageNum - 1) * limit > 0 ? (pageNum - 1) * limit : 0;
     try {
-      const data = await Model.find({ published: true })
+      const data = await Model.find({ published: true, ...query })
+        .populate(populate)
         .sort({ createdAt: "desc", _id: 1 })
         .skip(skipValue)
         .limit(limit);
@@ -59,10 +65,12 @@ exports.getAll = (Model) => {
   };
 };
 
-exports.getOneBySlug = (Model) => {
+exports.getOneBySlug = (Model, populate) => {
   return async (req, res, next) => {
     try {
-      const data = await Model.findOne({ slug: req.params.slug });
+      const data = await Model.findOne({ slug: req.params.slug }).populate(
+        populate
+      );
       return res.status(200).json({
         status: "success",
         data,

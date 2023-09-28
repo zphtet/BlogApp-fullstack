@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { successToast, errorToast } from "../utils/toast";
 import { useNavigate } from "react-router-dom";
+import useUser from "../Hook/useUser";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+  const { setUser } = useUser();
   const onSubmit = async (data) => {
     const url = import.meta.env.VITE_BACKEND_URL;
     const fdata = new FormData();
@@ -26,6 +28,7 @@ const Login = () => {
     console.log(respData);
     if (respData.status === "success") {
       // Cookie.set("jwt", respData?.jwt, { expires: 7 });
+      setUser(respData.data);
       successToast("Success Login 👌");
       navigate("/");
       return;

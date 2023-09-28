@@ -39,9 +39,6 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.cookie("cookieName", "cookieValue", {
-    maxAge: 60600746,
-  });
   res.send("This is my blog app backend endpoint");
 });
 

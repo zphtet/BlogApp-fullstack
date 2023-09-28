@@ -1,19 +1,31 @@
 import React from "react";
-import authorImg from "../assets/author.jpg";
 import { BsBookmarkPlus, BsFillBookmarkPlusFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { ParagraphOutput } from "editorjs-react-renderer";
 // BsFillBookmarkPlusFill;
 const Card = ({ mine, saved, data }) => {
-  const { title, category, createdAt, duration, slug, photo, blogData } = data;
+  const {
+    title,
+    category,
+    createdAt,
+    duration,
+    slug,
+    photo,
+    blogData,
+    author,
+  } = data;
   const date = new Date(createdAt);
   const formatDate = date.toLocaleString("en-US", {
     month: "long",
     year: "numeric",
     day: "numeric",
   });
-  const photoUrl = `http://localhost:3000/${photo}`;
+  const photoUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${photo}`;
+  const profileUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${
+    author.profile
+  }`;
+
   const paragraph = blogData?.blocks.find(({ type }) => type === "paragraph");
   // console.log(paragraph);
   return (
@@ -23,15 +35,15 @@ const Card = ({ mine, saved, data }) => {
           <div className={`flex  items-center gap-2 ${mine && "hidden"}`}>
             <div className="w-10 h-10 rounded-full overflow-hidden ">
               <img
-                src={authorImg}
+                src={profileUrl}
                 className="w-full h-full object-cover"
                 alt="author image"
               />
             </div>
             <p className="author-name font-semibold cursor-pointer">
-              Tony Abra
+              {author.name}
             </p>
-            <p className="post-date text-sm text-dgray ">{formatDate}</p>
+            <p className="post-date text-xs text-dgray ">{formatDate}</p>
           </div>
 
           <h3 className="text-2xl font-bold cursor-pointer ml:text-xl pb-0">

@@ -1,14 +1,39 @@
 import { themeContext } from "./Context/ThemeContext";
 import Header from "./components/Header";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-// import Profile from "./components/Profile";
-// import Detail from "./components/Detail";
-// import Signup from "./components/Signup";
+
+import useUser from "./Hook/useUser";
 import { Toaster } from "react-hot-toast";
 
 function App() {
   const { state } = useContext(themeContext);
+  const { setUser } = useUser();
+  const [loading, setLoading] = useState(true);
+
+  const hasUserData = async () => {
+    const url = import.meta.env.VITE_BACKEND_URL;
+    const resp = await fetch(`${url}/auth/isloggedin`, {
+      credentials: "include",
+    });
+    const data = await resp.json();
+
+    if (data?.status !== "success") return false;
+    return data.data;
+  };
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const data = await hasUserData();
+      if (data) {
+        setUser(data);
+      }
+      setLoading(false);
+    };
+    checkUser();
+  }, []);
+
+  if (loading) return <div>Loading ... </div>;
   return (
     <div className={` ${state} `}>
       <Toaster />

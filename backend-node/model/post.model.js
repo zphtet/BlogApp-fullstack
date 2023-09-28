@@ -26,6 +26,10 @@ const postSchema = new mongoose.Schema({
   slug: {
     type: String,
   },
+  author: {
+    type: mongoose.ObjectId,
+    ref: "users",
+  },
 });
 
 // Document Middleware

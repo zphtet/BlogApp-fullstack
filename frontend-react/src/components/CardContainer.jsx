@@ -15,6 +15,7 @@ const CardContainer = () => {
   } = useContext(PostContext);
 
   async function fetchData(pageNum) {
+    console.log("fetch data");
     setFetching(true);
 
     console.log("Page Numbner form fun", pageNum);
@@ -25,8 +26,8 @@ const CardContainer = () => {
       }
     );
     const data = await resp.json();
-
-    if (data.count < 5) {
+    console.log(data);
+    if (data?.count < 5) {
       dispatch({ type: "SET_FETCH_DONE", payload: true });
     }
 
@@ -40,7 +41,7 @@ const CardContainer = () => {
       window.innerHeight + document.documentElement.scrollTop !==
       document.documentElement.offsetHeight
     ) {
-      console.log("hello");
+      // console.log("hello");
       return;
     }
     if (fetching) return;
@@ -54,7 +55,7 @@ const CardContainer = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pageNumber]);
-  if (loading && posts.length <= 0)
+  if (loading && fetching)
     return (
       <div className="card-container">
         <CardSkeleton />
@@ -62,6 +63,15 @@ const CardContainer = () => {
         <CardSkeleton />
       </div>
     );
+
+  //  if (loading && posts.length <= 0)
+  //    return (
+  //      <div className="card-container">
+  //        <CardSkeleton />
+  //        <CardSkeleton />
+  //        <CardSkeleton />
+  //      </div>
+  //    );
   return (
     <div className="card-container ">
       {posts?.map((post) => (

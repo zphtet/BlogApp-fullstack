@@ -22,9 +22,10 @@ async function deletAll(req, res) {
 
 const getPostById = getOneById(postModel);
 const createPost = createDoc(postModel, "blogData");
-const getAllPosts = getAll(postModel);
-const getPostBySlug = getOneBySlug(postModel);
+const getAllPosts = getAll(postModel, "author");
+const getPostBySlug = getOneBySlug(postModel, "author");
 const updatePostBySlug = updateOneBySlug(postModel, "blogData");
+const getMyPosts = getAll(postModel, "", "_id");
 module.exports = {
   createPost,
   getPostById,
@@ -32,4 +33,5 @@ module.exports = {
   getAllPosts,
   getPostBySlug,
   updatePostBySlug,
+  getMyPosts,
 };

@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import authorImg from "../assets/author.jpg";
 import Output from "editorjs-react-renderer";
 import PostSkeleton from "./PostSkeleton";
 import { useParams, Link } from "react-router-dom";
 import { PostContext } from "../Context/postContext";
-const url = "http://localhost:3000/api";
+import useUser from "../Hook/useUser";
+const url = import.meta.env.VITE_BACKEND_URL;
 //   time: 1564767102436,
 //   blocks: [
 //     {
@@ -104,6 +104,7 @@ const classes = {
 const Detail = () => {
   // const [post, setPost] = React.useState(null);
   const { slug } = useParams();
+  const { user } = useUser();
 
   const {
     state: { currentPost, posts },
@@ -120,7 +121,7 @@ const Detail = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
+        console.log(data);
         dispatch({ type: "SET_CURR_POST", payload: data.data });
         // setPost(data);
       });
@@ -138,13 +139,21 @@ const Detail = () => {
 
   // console.log(post)
   if (!currentPost) return <PostSkeleton />;
-  const imgUrl = `http://localhost:3000/${currentPost.photo}`;
+  const imgUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${
+    currentPost.photo
+  }`;
+  const profileUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${
+    currentPost.author.profile
+  }`;
   const date = new Date(currentPost?.createdAt);
   const formatDate = date?.toLocaleString("en-US", {
     month: "long",
     year: "numeric",
     day: "numeric",
   });
+
+  const isEditable = currentPost.author._id === user?._id;
+
   return (
     <div
       id="detail"
@@ -156,12 +165,12 @@ const Detail = () => {
           <div className="img-container">
             <img
               className="w-12 h-12 rounded-full object-cover"
-              src={authorImg}
+              src={profileUrl}
               alt="author image"
             />
           </div>
           <div>
-            <p className="font-bold">Tony Abraham</p>
+            <p className="font-bold">{currentPost.author?.name}</p>
             <p>
               {formatDate}
               <span className=" text-xs ml-2 rounded px-2  pb-0.5 text-white  bg-[#9f74ed]">
@@ -171,9 +180,11 @@ const Detail = () => {
             </p>
           </div>
         </div>
-        <Link to={`/editpost/${slug}`}>
-          <button className="btn self-end">Edit</button>
-        </Link>
+        {isEditable && (
+          <Link to={`/editpost/${slug}`}>
+            <button className="btn self-end">Edit</button>
+          </Link>
+        )}
       </div>
 
       <div className="">
@@ -195,7 +206,7 @@ const Detail = () => {
       <Output data={currentPost.blogData} style={style} classNames={classes} />
       <div className="button-container flex justify-end">
         <Link to={"/"}>
-          <button className="btn">To Home</button>
+          <button className="btn">Back</button>
         </Link>
       </div>
     </div>

@@ -86,3 +86,18 @@ exports.login = async (req, res, next) => {
     return next(new AppError("Error Loggin ", 500));
   }
 };
+
+exports.logout = async (req, res, next) => {
+  res.clearCookie("jwt");
+  return res.status(200).json({
+    status: "success",
+  });
+};
+
+exports.sendUserLoggedIn = async (req, res, next) => {
+  // console.log("user logged in", req.user);
+  return res.status(200).json({
+    status: "success",
+    data: req.user,
+  });
+};

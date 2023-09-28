@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { successToast, errorToast } from "../utils/toast";
 import { useNavigate } from "react-router-dom";
-
+import useUser from "../Hook/useUser";
 const Signup = () => {
   const { register, handleSubmit, watch } = useForm();
   const [loading, setLoading] = React.useState(false);
-
+  const { setUser } = useUser();
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
@@ -24,6 +24,7 @@ const Signup = () => {
       const res = await fetch(`${url}/auth/signup`, {
         method: "POST",
         body: fdata,
+        credentials: "include",
       });
 
       const respData = await res.json();
@@ -31,6 +32,7 @@ const Signup = () => {
       setLoading(false);
       console.log(respData);
       if (respData.status === "success") {
+        setUser(respData.data);
         successToast("Success! 👌");
         navigate("/");
         return;
@@ -53,7 +55,7 @@ const Signup = () => {
           className="input"
           {...register("name", {
             ...option,
-            minLength: 4,
+            minLength: 3,
             message: "At least four characters required",
           })}
           type="text"

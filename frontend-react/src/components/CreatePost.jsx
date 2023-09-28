@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import Editor from "./Editor";
 import Categroy from "../utils/Categroy";
+import { errorToast, successToast } from "../utils/toast";
+import useNavi from "../Hook/useNavi";
+import { PostContext } from "../Context/postContext";
 
 const url = "http://localhost:3000/api";
 
@@ -10,6 +13,10 @@ const CreatePost = () => {
   const [category, setCategory] = React.useState("general");
   const [blogData, setBlogData] = React.useState("");
   const [duration, setDuration] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
+  const navigate = useNavi();
+
+  const { dispatch } = useContext(PostContext);
 
   const titleHandler = (e) => {
     setTitle(e.target.value);
@@ -24,25 +31,37 @@ const CreatePost = () => {
     setDuration(+e.target.value);
   };
   const submitHandler = async (e) => {
-    e.preventDefault();
-    console.log(title, photo, category);
-    console.log(blogData);
-    let content = JSON.stringify(blogData);
-    const fdata = new FormData();
-    fdata.append("title", title);
-    fdata.append("photo", photo);
-    fdata.append("category", category);
-    fdata.append("duration", duration);
-    fdata.append("blogData", content);
+    try {
+      setLoading(true);
+      e.preventDefault();
+      console.log(title, photo, category);
+      console.log(blogData);
+      let content = JSON.stringify(blogData);
+      const fdata = new FormData();
+      fdata.append("title", title);
+      fdata.append("photo", photo);
+      fdata.append("category", category);
+      fdata.append("duration", duration);
+      fdata.append("blogData", content);
+      fdata.append("createdAt", Date.now());
 
-    const resp = await fetch(`${url}/posts`, {
-      credentials: "include",
-      method: "POST",
-      body: fdata,
-    });
+      const resp = await fetch(`${url}/posts`, {
+        credentials: "include",
+        method: "POST",
+        body: fdata,
+      });
 
-    const data = await resp.json();
-    console.log(data);
+      const data = await resp.json();
+      if (data.status === "success") {
+        dispatch({ type: "SET_FETCH_DONE", payload: false });
+        dispatch({ type: "CLEAR_POSTS" });
+        successToast("Successfully published");
+        navigate("/");
+      }
+      console.log(data);
+    } catch (err) {
+      errorToast("Error Publishing 🔥");
+    }
   };
   return (
     <div className=" p-5 w-[min(100%,720px)] mx-auto ml:p-0">
@@ -111,7 +130,10 @@ const CreatePost = () => {
           />
         </div>
 
-        <button className="btn">Publish</button>
+        <button className="btn">
+          {" "}
+          {loading ? "Publishing ..." : "Publish"}
+        </button>
       </form>
     </div>
   );
