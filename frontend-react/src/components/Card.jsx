@@ -3,10 +3,10 @@ import { BsBookmarkPlus, BsFillBookmarkPlusFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { ParagraphOutput } from "editorjs-react-renderer";
-// BsFillBookmarkPlusFill;
+import { formatDistance } from "date-fns";
 import { errorToast, successToast } from "../utils/toast";
 import useNavi from "../Hook/useNavi";
-const Card = ({ mine, saved, data }) => {
+const Card = ({ mine, saved, data, dispatch }) => {
   const navigate = useNavi();
   const {
     title,
@@ -20,11 +20,12 @@ const Card = ({ mine, saved, data }) => {
     _id,
   } = data;
   const date = new Date(createdAt);
-  const formatDate = date.toLocaleString("en-US", {
-    month: "long",
-    year: "numeric",
-    day: "numeric",
-  });
+  // const formatDate = date.toLocaleString("en-US", {
+  //   month: "long",
+  //   year: "numeric",
+  //   day: "numeric",
+  // });
+  const formatDate = formatDistance(date, Date.now()) + " ago";
   const photoUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${photo}`;
   const profileUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${
     author.profile
@@ -38,13 +39,15 @@ const Card = ({ mine, saved, data }) => {
         credentials: "include",
       });
 
+      dispatch({ type: "DELETE_POST", payload: _id });
+
       successToast("Delete post successfully ☑");
     } catch (err) {
       errorToast("Error deleting post 🔥");
     }
   };
 
-  const paragraph = blogData?.blocks.find(({ type }) => type === "paragraph");
+  const paragraph = blogData?.blocks?.find(({ type }) => type === "paragraph");
   // console.log(paragraph);
   return (
     <div className="post px-5 dark:text-white ml:px-0">

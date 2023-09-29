@@ -1,11 +1,13 @@
 import { createContext, useReducer } from "react";
 const initialState = {
   posts: [],
-  currentPost: null,
   fetchDone: false,
-  editData: null,
 };
 export const MyPostContext = createContext();
+
+const filteredPosts = (posts, filterId) => {
+  return posts.filter((post) => post._id !== filterId);
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -15,14 +17,15 @@ const reducer = (state, action) => {
         posts: [...state.posts, ...action.payload],
       };
     case "CLEAR_POSTS":
+      console.log("CLEAR POST WORKING");
       return {
         ...state,
         posts: [],
       };
-    case "SET_CURR_POST":
+    case "DELETE_POST":
       return {
         ...state,
-        currentPost: action.payload,
+        posts: filteredPosts(state.posts, action.payload),
       };
     case "SET_FETCH_DONE":
       return {
@@ -30,16 +33,6 @@ const reducer = (state, action) => {
         fetchDone: action.payload,
       };
 
-    case "SET_EDIT_DATA":
-      return {
-        ...state,
-        editData: action.payload,
-      };
-    case "CLEAR_EDIT_DATA":
-      return {
-        ...state,
-        editData: null,
-      };
     default:
       return {
         ...state,

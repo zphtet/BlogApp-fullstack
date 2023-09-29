@@ -4,6 +4,7 @@ import PostSkeleton from "./PostSkeleton";
 import { useParams, Link } from "react-router-dom";
 import { PostContext } from "../Context/postContext";
 import useUser from "../Hook/useUser";
+import formatDistance from "date-fns/formatDistance";
 const url = import.meta.env.VITE_BACKEND_URL;
 //   time: 1564767102436,
 //   blocks: [
@@ -146,11 +147,12 @@ const Detail = () => {
     currentPost.author.profile
   }`;
   const date = new Date(currentPost?.createdAt);
-  const formatDate = date?.toLocaleString("en-US", {
-    month: "long",
-    year: "numeric",
-    day: "numeric",
-  });
+  // const formatDate = date?.toLocaleString("en-US", {
+  //   month: "long",
+  //   year: "numeric",
+  //   day: "numeric",
+  // });
+  const formatDate = formatDistance(date, Date.now()) + " ago";
 
   const isEditable = currentPost.author._id === user?._id;
 

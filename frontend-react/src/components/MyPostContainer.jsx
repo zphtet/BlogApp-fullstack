@@ -4,11 +4,8 @@ import CardSkeleton from "./CardSkeleton";
 import { MyPostContext } from "../Context/myPostContext.jsx";
 const MyPostContainer = () => {
   const [loading, setLoading] = React.useState(true);
-  // const [posts, setPosts] = React.useState([]);
-  let [pageNumber, setPageNumber] = React.useState(1);
-  // const [done, setDone] = React.useState(false);
+  const [pageNum, setPageNum] = React.useState(1);
   const [fetching, setFetching] = React.useState(false);
-
   const url = import.meta.env.VITE_BACKEND_URL;
 
   const {
@@ -17,48 +14,31 @@ const MyPostContainer = () => {
   } = useContext(MyPostContext);
 
   async function fetchData(pageNum) {
-    console.log("fetch data mypostcontainer");
     setFetching(true);
     const resp = await fetch(`${url}/posts/getmyposts?page=${pageNum}`, {
       credentials: "include",
     });
     const data = await resp.json();
-    console.log(data);
-    if (data?.count < 5) {
-      dispatch({ type: "SET_FETCH_DONE", payload: true });
-    }
-
-    dispatch({ type: "SET_POSTS", payload: data.data });
-    setLoading(false);
     setFetching(false);
-    console.log("Fetched ALL POSTS");
+    return data;
   }
-  const handleScroll = async () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-      document.documentElement.offsetHeight
-    ) {
-      // console.log("hello");
-      return;
-    }
+
+  const loadHandler = () => {
     if (fetching) return;
-    console.log("i am fetching data");
-    setPageNumber((prev) => prev + 1);
+    setPageNum((prev) => prev + 1);
   };
   React.useEffect(() => {
-    console.log("USER EFFECT FROM MYPOSTCONTAINER WORKING");
-    console.log("fetchDone", fetchDone);
     if (fetchDone) return;
-
-    fetchData(pageNumber);
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      dispatch({ type: "SET_FETCH_DONE", payload: false });
-      dispatch({ type: "CLEAR_POSTS" });
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [pageNumber]);
-  if (loading && fetching)
+    fetchData(pageNum).then((data) => {
+      if (data.data.length < 5) {
+        dispatch({ type: "SET_FETCH_DONE", payload: true });
+      }
+      dispatch({ type: "SET_POSTS", payload: [...data.data] });
+      setLoading(false);
+    });
+  }, [pageNum]);
+  console.log("MY-POST_CONTSINER RENDER");
+  if (loading)
     return (
       <div className="card-container">
         <CardSkeleton />
@@ -67,26 +47,30 @@ const MyPostContainer = () => {
       </div>
     );
 
-  //  if (loading && posts.length <= 0)
-  //    return (
-  //      <div className="card-container">
-  //        <CardSkeleton />
-  //        <CardSkeleton />
-  //        <CardSkeleton />
-  //      </div>
-  //    );
-
-  console.log("MY-POST_CONTSINER RENDER");
   return (
     <div className="card-container ">
       {posts?.map((post) => (
-        <Card data={post} key={`${post._id}-${Date.now()}`} mine dispatch />
+        <Card
+          data={post}
+          key={`${post._id}-${Date.now()}`}
+          mine
+          dispatch={dispatch}
+        />
       ))}
-      {!fetchDone && fetching && (
+
+      {!fetchDone && (
+        <div className="flex items-center  px-5">
+          <button onClick={loadHandler} className="btn">
+            {fetching ? "Loading..." : "Load More"}
+          </button>
+        </div>
+      )}
+
+      {/* {!fetchDone && (
         <div className="px-5">
           <p>Fetching more ... </p>
         </div>
-      )}
+      )} */}
 
       {/* {fetchDone && (
         <div className="p-5">

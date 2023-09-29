@@ -3,9 +3,19 @@ import React from "react";
 // import Card from "./Card";
 import useUser from "../Hook/useUser";
 import MyPostContainer from "./MyPostContainer";
+import { MyPostContext } from "../Context/myPostContext";
 const Profile = () => {
   const [tabActive, setTabActive] = React.useState(true);
   const { user } = useUser();
+  const { dispatch } = React.useContext(MyPostContext);
+
+  React.useEffect(() => {
+    return () => {
+      console.log("I am DISMOUNTING");
+      dispatch({ type: "CLEAR_POSTS" });
+      dispatch({ type: "SET_FETCH_DONE", payload: false });
+    };
+  }, []);
 
   const profileImgUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${
     user.profile
