@@ -28,6 +28,7 @@ exports.createDoc = (Model, parse) => {
     }
     try {
       const resp = await Model.create(createObj);
+      console.log("creation successful");
       return res.status(201).json({
         status: "success",
         data: resp,

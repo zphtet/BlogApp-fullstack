@@ -58,6 +58,10 @@ const CreatePost = () => {
         successToast("Successfully published");
         navigate("/");
       }
+      if (data.status === "error") {
+        successToast("Error Publishing 🔥");
+        setLoading(false);
+      }
       console.log(data);
     } catch (err) {
       errorToast("Error Publishing 🔥");

@@ -12,6 +12,7 @@ const isLoggedIn = async (req, res, next) => {
   if (!user)
     return next(new AppError("You are not allowed to access this route", 404));
   req.user = user;
+  console.log("IsLoggedIn Workin");
   next();
 };
 

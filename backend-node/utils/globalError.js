@@ -11,6 +11,6 @@ module.exports = (err, req, res, next) => {
     status: "error",
     statusCode: err.code,
     message: err.message,
-    stack: err.error.stack,
+    stack: err.error?.stack,
   });
 };

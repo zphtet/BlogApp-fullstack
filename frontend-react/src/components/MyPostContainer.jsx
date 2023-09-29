@@ -37,7 +37,7 @@ const MyPostContainer = () => {
       setLoading(false);
     });
   }, [pageNum]);
-  console.log("MY-POST_CONTSINER RENDER");
+
   if (loading)
     return (
       <div className="card-container">
@@ -49,6 +49,9 @@ const MyPostContainer = () => {
 
   return (
     <div className="card-container ">
+      {posts.length === 0 && (
+        <p className="px-5 font-bold text-2xl">You have no posts yet.</p>
+      )}
       {posts?.map((post) => (
         <Card
           data={post}

@@ -11,7 +11,7 @@ const globalErrorHandler = require("./utils/globalError");
 // IMPORT ROUTERS
 const postRouter = require("./routes/post.route");
 const authRouter = require("./routes/auth.route");
-
+const bookmarkRouter = require("./routes/bookmark.route");
 // DEFAULT PORT
 const port = 3000;
 
@@ -48,7 +48,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
-
+app.use("/api/bookmark", bookmarkRouter);
 app.get("/err", (req, res) => {
   throw new Error("Error Occured");
 });

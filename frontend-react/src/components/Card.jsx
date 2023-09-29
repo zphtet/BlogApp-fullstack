@@ -6,6 +6,7 @@ import { ParagraphOutput } from "editorjs-react-renderer";
 import { formatDistance } from "date-fns";
 import { errorToast, successToast } from "../utils/toast";
 import useNavi from "../Hook/useNavi";
+import addBookmark from "../utils/addBookmark";
 const Card = ({ mine, saved, data, dispatch }) => {
   const navigate = useNavi();
   const {
@@ -20,11 +21,7 @@ const Card = ({ mine, saved, data, dispatch }) => {
     _id,
   } = data;
   const date = new Date(createdAt);
-  // const formatDate = date.toLocaleString("en-US", {
-  //   month: "long",
-  //   year: "numeric",
-  //   day: "numeric",
-  // });
+
   const formatDate = formatDistance(date, Date.now()) + " ago";
   const photoUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${photo}`;
   const profileUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${
@@ -45,6 +42,10 @@ const Card = ({ mine, saved, data, dispatch }) => {
     } catch (err) {
       errorToast("Error deleting post 🔥");
     }
+  };
+
+  const bookmarkHandler = () => {
+    addBookmark({ post: _id });
   };
 
   const paragraph = blogData?.blocks?.find(({ type }) => type === "paragraph");
@@ -99,7 +100,10 @@ const Card = ({ mine, saved, data, dispatch }) => {
               </>
             ) : (
               <>
-                <BsBookmarkPlus className="cursor-pointer w-5 h-5 " />
+                <BsBookmarkPlus
+                  onClick={bookmarkHandler}
+                  className="cursor-pointer w-5 h-5 "
+                />
               </>
             )}
           </div>
