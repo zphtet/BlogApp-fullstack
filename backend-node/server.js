@@ -27,9 +27,10 @@ app.use(
 app.use(express.json());
 
 app.use(express.static(__dirname + "/images"));
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(helmet());
-
+helmet({
+  crossOriginResourcePolicy: false,
+});
 console.log(process.env.NODE_ENV);
 
 app.use((req, res, next) => {
