@@ -1,14 +1,16 @@
-import React from "react";
-import { BsBookmarkPlus, BsFillBookmarkPlusFill } from "react-icons/bs";
+import React, { useContext } from "react";
+import { BsFillBookmarkPlusFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { ParagraphOutput } from "editorjs-react-renderer";
 import { formatDistance } from "date-fns";
 import { errorToast, successToast } from "../utils/toast";
 import useNavi from "../Hook/useNavi";
-import addBookmark from "../utils/addBookmark";
-const Card = ({ mine, saved, data, dispatch }) => {
+import { PostContext } from "../Context/postContext";
+
+const Card = ({ mine, saved, data, dis }) => {
   const navigate = useNavi();
+  const { dispatch } = useContext(PostContext);
   const {
     title,
     category,
@@ -20,14 +22,15 @@ const Card = ({ mine, saved, data, dispatch }) => {
     author,
     _id,
   } = data;
+
   const date = new Date(createdAt);
 
   const formatDate = formatDistance(date, Date.now()) + " ago";
   const photoUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${photo}`;
   const profileUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${
-    author.profile
+    author?.profile
   }`;
-
+  // const isMyPost = user?._id === author._id;
   const deleteHandler = async () => {
     const url = import.meta.env.VITE_BACKEND_URL;
     try {
@@ -36,7 +39,9 @@ const Card = ({ mine, saved, data, dispatch }) => {
         credentials: "include",
       });
 
-      dispatch({ type: "DELETE_POST", payload: _id });
+      dis({ type: "DELETE_POST", payload: _id });
+      dispatch({ type: "SET_FETCH_DONE", payload: false });
+      dispatch({ type: "CLEAR_POSTS" });
 
       successToast("Delete post successfully ☑");
     } catch (err) {
@@ -44,17 +49,17 @@ const Card = ({ mine, saved, data, dispatch }) => {
     }
   };
 
-  const bookmarkHandler = () => {
-    addBookmark({ post: _id });
-  };
-
   const paragraph = blogData?.blocks?.find(({ type }) => type === "paragraph");
-  // console.log(paragraph);
+
   return (
     <div className="post px-5 dark:text-white ml:px-0">
       <div className="pb-3 border-b border-dgray flex gap-10 tb:gap-4  items-center justify-between">
         <div className=" flex flex-col gap-1 ">
-          <div className={`flex  items-center gap-2 ${mine && "hidden"}`}>
+          <div
+            className={`flex  items-center gap-2 ${
+              (mine || saved) && "hidden"
+            }`}
+          >
             <div className="w-10 h-10 rounded-full overflow-hidden ">
               <img
                 src={profileUrl}
@@ -99,12 +104,7 @@ const Card = ({ mine, saved, data, dispatch }) => {
                 />
               </>
             ) : (
-              <>
-                <BsBookmarkPlus
-                  onClick={bookmarkHandler}
-                  className="cursor-pointer w-5 h-5 "
-                />
-              </>
+              <></>
             )}
           </div>
         </div>

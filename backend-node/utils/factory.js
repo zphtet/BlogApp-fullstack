@@ -49,7 +49,7 @@ exports.getAll = (Model, populate, queryBy) => {
     const pageNum = req.query.page || 0;
     const skipValue = (pageNum - 1) * limit > 0 ? (pageNum - 1) * limit : 0;
     try {
-      const data = await Model.find({ published: true, ...query })
+      const data = await Model.find({ ...query })
         .populate(populate)
         .sort({ createdAt: "desc", _id: 1 })
         .skip(skipValue)

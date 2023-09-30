@@ -17,6 +17,7 @@ import Profile from "./components/Profile.jsx";
 import { PostContextProvider } from "./Context/postContext.jsx";
 import { UserContextProvider } from "./Context/userContext.jsx";
 import { MyPostContextProvider } from "./Context/myPostContext.jsx";
+import { BookmarkContextProvider } from "./Context/bookmarkContext.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -74,7 +75,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <UserContextProvider>
       <PostContextProvider>
         <MyPostContextProvider>
-          <RouterProvider router={router} />
+          <BookmarkContextProvider>
+            <RouterProvider router={router} />
+          </BookmarkContextProvider>
         </MyPostContextProvider>
       </PostContextProvider>
     </UserContextProvider>

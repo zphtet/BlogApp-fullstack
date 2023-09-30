@@ -3,6 +3,7 @@ import React from "react";
 // import Card from "./Card";
 import useUser from "../Hook/useUser";
 import MyPostContainer from "./MyPostContainer";
+import BookmarkContainer from "./BookmarkContainer";
 import { MyPostContext } from "../Context/myPostContext";
 const Profile = () => {
   const [tabActive, setTabActive] = React.useState(true);
@@ -45,7 +46,7 @@ const Profile = () => {
         </button>
       </div>
       <div className="profile-card-container mt-7 flex flex-col gap-4">
-        {tabActive ? <MyPostContainer /> : <MyPostContainer />}
+        {tabActive ? <MyPostContainer /> : <BookmarkContainer />}
       </div>
     </div>
   );

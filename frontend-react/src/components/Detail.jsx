@@ -5,6 +5,10 @@ import { useParams, Link } from "react-router-dom";
 import { PostContext } from "../Context/postContext";
 import useUser from "../Hook/useUser";
 import formatDistance from "date-fns/formatDistance";
+import { errorToast, successToast } from "../utils/toast";
+import useNavi from "../Hook/useNavi";
+import addBookmark from "../utils/addBookmark";
+import ButtonSkeleton from "./ButtonSkeleton";
 const url = import.meta.env.VITE_BACKEND_URL;
 //   time: 1564767102436,
 //   blocks: [
@@ -103,19 +107,45 @@ const classes = {
 };
 
 const Detail = () => {
-  // const [post, setPost] = React.useState(null);
   const { slug } = useParams();
   const { user } = useUser();
-
+  const navigate = useNavi();
   const {
-    state: { currentPost, posts },
+    state: { currentPost },
     dispatch,
   } = useContext(PostContext);
 
-  const selectPost = (posts) => {
-    return posts.find((post) => post.slug === slug);
-  };
+  const [save, setSave] = React.useState(null);
 
+  const [ready, setReady] = React.useState(false);
+
+  // const selectPost = (posts) => {
+  //   return posts.find((post) => post.slug === slug);
+  // };
+  const fetchSaved = (authorId, postId) => {
+    console.log("Fetch saved Worked");
+    fetch(`${url}/bookmark/${postId}`, {
+      credentials: "include",
+      method: "POST",
+      body: JSON.stringify({
+        author: authorId,
+        post: postId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setReady(true);
+        if (data.status === "success" && data.data) {
+          setSave(true);
+          return;
+        }
+        setSave(false);
+      })
+      .catch((err) => console.log(err));
+  };
   const fetchPost = () => {
     fetch(`${url}/posts/${slug}`, {
       credentials: "include",
@@ -124,22 +154,55 @@ const Detail = () => {
       .then((data) => {
         console.log(data);
         dispatch({ type: "SET_CURR_POST", payload: data.data });
-        // setPost(data);
+        // fetchSaved();
+        fetchSaved(user._id, data.data._id);
       });
   };
 
-  React.useEffect(() => {
-    const selectedPost = selectPost(posts);
-    if (selectedPost) {
-      dispatch({ type: "SET_CURR_POST", payload: selectedPost });
+  const deleteHandler = async () => {
+    const url = import.meta.env.VITE_BACKEND_URL;
+    try {
+      await fetch(`${url}/posts/delete/${currentPost._id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      successToast("Delete post successfully ☑");
+      dispatch({ type: "CLEAR_POSTS" });
+      dispatch({ type: "SET_FETCH_DONE", payload: false });
+      navigate("/");
+    } catch (err) {
+      errorToast("Error deleting post 🔥");
+    }
+  };
+
+  const bookmarkHandler = async () => {
+    if (!user) {
+      successToast("You must Login First");
+      navigate("/signup");
       return;
     }
+    const isAdded = await addBookmark({ post: currentPost._id });
+    console.log("isAdded", isAdded);
+    if (isAdded) {
+      setSave(true);
+    }
+  };
+
+  React.useEffect(() => {
+    // const selectedPost = selectPost(posts);
+
+    // if (selectedPost) {
+    //   dispatch({ type: "SET_CURR_POST", payload: selectedPost });
+
+    //   return;
+    // }
 
     fetchPost();
-  }, [slug, dispatch]);
+  }, [slug]);
 
   // console.log(post)
   if (!currentPost) return <PostSkeleton />;
+
   const imgUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${
     currentPost.photo
   }`;
@@ -147,13 +210,7 @@ const Detail = () => {
     currentPost.author.profile
   }`;
   const date = new Date(currentPost?.createdAt);
-  // const formatDate = date?.toLocaleString("en-US", {
-  //   month: "long",
-  //   year: "numeric",
-  //   day: "numeric",
-  // });
   const formatDate = formatDistance(date, Date.now()) + " ago";
-
   const isEditable = currentPost.author._id === user?._id;
 
   return (
@@ -182,10 +239,25 @@ const Detail = () => {
             </p>
           </div>
         </div>
-        {isEditable && (
-          <Link to={`/editpost/${slug}`}>
-            <button className="btn self-end">Edit</button>
-          </Link>
+        {isEditable ? (
+          <div className="space-x-2">
+            <Link to={`/editpost/${slug}`}>
+              <button className="btn self-end">Edit</button>
+            </Link>
+            <button className="btn " onClick={deleteHandler}>
+              Delete
+            </button>
+          </div>
+        ) : !ready ? (
+          <ButtonSkeleton />
+        ) : (
+          <button
+            className={`btn  self-end ${save && "opacity-60"}`}
+            disabled={save}
+            onClick={bookmarkHandler}
+          >
+            {save ? "Saved" : "Save"}
+          </button>
         )}
       </div>
 

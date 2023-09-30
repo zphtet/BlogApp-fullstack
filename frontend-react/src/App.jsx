@@ -27,6 +27,7 @@ function App() {
       const data = await hasUserData();
       if (data) {
         setUser(data);
+        console.log(data);
       }
       setLoading(false);
     };
@@ -41,13 +42,7 @@ function App() {
         <Header />
 
         <div className="max-w-container mx-auto p-5">
-          {/* <RouterProvider router={router} /> */}
-          {/* <CardContainer /> */}
           <Outlet />
-
-          {/* <Signup /> */}
-          {/* <Outlet /> */}
-          {/* <Profile /> */}
         </div>
       </div>
     </div>

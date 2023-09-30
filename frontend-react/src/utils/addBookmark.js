@@ -16,12 +16,15 @@ const addBookmark = async (obj) => {
     console.log(data);
     if (data.ok) {
       successToast("Added to Bookmark ✅");
+      return true;
     }
     if (!data?.ok) {
       errorToast("Error Add to Bookmark 🔥");
+      return false;
     }
   } catch (err) {
-    errorToast("Error Add to Bookmark 🔥");
+    // errorToast("Error Add to Bookmark 🔥");
+    return false;
   }
 };
 

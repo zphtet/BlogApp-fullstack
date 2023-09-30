@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import Card from "./Card";
 import CardSkeleton from "./CardSkeleton";
-import { MyPostContext } from "../Context/myPostContext.jsx";
-const MyPostContainer = () => {
+import { BookmarkContext } from "../Context/bookmarkContext";
+const BookmarkContainer = () => {
   const [loading, setLoading] = React.useState(true);
   const [pageNum, setPageNum] = React.useState(1);
   const [fetching, setFetching] = React.useState(false);
@@ -11,14 +11,15 @@ const MyPostContainer = () => {
   const {
     state: { posts, fetchDone },
     dispatch,
-  } = useContext(MyPostContext);
+  } = useContext(BookmarkContext);
 
   async function fetchData(pageNum) {
     setFetching(true);
-    const resp = await fetch(`${url}/posts/getmyposts?page=${pageNum}`, {
+    const resp = await fetch(`${url}/bookmark/getmybookmarks?page=${pageNum}`, {
       credentials: "include",
     });
     const data = await resp.json();
+    console.log(data);
     setFetching(false);
     return data;
   }
@@ -36,13 +37,15 @@ const MyPostContainer = () => {
       dispatch({ type: "SET_POSTS", payload: [...data.data] });
       setLoading(false);
     });
-
     return () => {
       dispatch({ type: "SET_FETCH_DONE", payload: false });
       dispatch({ type: "CLEAR_POSTS" });
     };
   }, [pageNum]);
 
+  console.log(posts);
+
+  // return <div>Hello</div>;
   if (loading)
     return (
       <div className="card-container">
@@ -59,9 +62,10 @@ const MyPostContainer = () => {
       )}
       {posts?.map((post) => (
         <Card
-          data={post}
+          data={post.post}
+          authorObj={post.author}
           key={`${post._id}-${Date.now()}`}
-          mine
+          saved
           dis={dispatch}
         />
       ))}
@@ -89,4 +93,4 @@ const MyPostContainer = () => {
   );
 };
 
-export default MyPostContainer;
+export default BookmarkContainer;
