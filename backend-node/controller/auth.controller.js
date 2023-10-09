@@ -67,9 +67,7 @@ exports.signUp = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   console.log(email, password);
-  // return res.json({
-  //   data: req.body,
-  // });
+
   try {
     const user = await userModel.findOne({ email: email });
     console.log(user);
@@ -95,7 +93,6 @@ exports.logout = async (req, res, next) => {
 };
 
 exports.sendUserLoggedIn = async (req, res, next) => {
-  // console.log("user logged in", req.user);
   return res.status(200).json({
     status: "success",
     data: req.user,

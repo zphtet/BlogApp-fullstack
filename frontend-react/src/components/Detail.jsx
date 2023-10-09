@@ -118,10 +118,6 @@ const Detail = () => {
   const [save, setSave] = React.useState(null);
 
   const [ready, setReady] = React.useState(false);
-
-  // const selectPost = (posts) => {
-  //   return posts.find((post) => post.slug === slug);
-  // };
   const fetchSaved = (authorId, postId) => {
     console.log("Fetch saved Worked");
     fetch(`${url}/bookmark/${postId}`, {
@@ -154,7 +150,6 @@ const Detail = () => {
       .then((data) => {
         console.log(data);
         dispatch({ type: "SET_CURR_POST", payload: data.data });
-        // fetchSaved();
         fetchSaved(user._id, data.data._id);
       });
   };
@@ -189,18 +184,9 @@ const Detail = () => {
   };
 
   React.useEffect(() => {
-    // const selectedPost = selectPost(posts);
-
-    // if (selectedPost) {
-    //   dispatch({ type: "SET_CURR_POST", payload: selectedPost });
-
-    //   return;
-    // }
-
     fetchPost();
   }, [slug]);
 
-  // console.log(post)
   if (!currentPost) return <PostSkeleton />;
 
   const imgUrl = `${import.meta.env.VITE_BACKEND_URL_STATIC}/${
@@ -269,18 +255,11 @@ const Detail = () => {
           alt="post img"
         />
       </div>
-      {/* <p className="indent-5">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias ab enim
-        modi illum consequatur, temporibus necessitatibus impedit nesciunt
-        magnam minima veniam expedita repellat eius dolorum asperiores quaerat
-        ipsum, repellendus voluptatum? Hic cupiditate veniam eos corrupti odit
-        obcaecati veritatis nobis, porro nihil nulla non, voluptatem eaque harum
-        fugit iure deleniti impedit!
-      </p> */}
+
       <Output data={currentPost.blogData} style={style} classNames={classes} />
       <div className="button-container flex justify-end">
         <Link to={"/"}>
-          <button className="btn">Back</button>
+          <button className="btn">Back to Home</button>
         </Link>
       </div>
     </div>

@@ -23,6 +23,7 @@ const reducer = (state, action) => {
         posts: [],
       };
     case "DELETE_POST":
+      console.log("working delet booknmark", action.payload, state.posts);
       return {
         ...state,
         posts: filteredPosts(state.posts, action.payload),

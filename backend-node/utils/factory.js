@@ -112,6 +112,7 @@ exports.updateOneBySlug = (Model, parse) => {
 exports.deleteOneById = (Model) => {
   return async (req, res, next) => {
     const { id } = req.params;
+    console.log("deleting bookmark", id);
     try {
       const data = await Model.deleteOne({ _id: id });
       return res.status(200).json({

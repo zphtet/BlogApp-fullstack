@@ -13,6 +13,8 @@ const BookmarkContainer = () => {
     dispatch,
   } = useContext(BookmarkContext);
 
+  console.log(posts, "posts");
+
   async function fetchData(pageNum) {
     setFetching(true);
     const resp = await fetch(`${url}/bookmark/getmybookmarks?page=${pageNum}`, {
@@ -43,8 +45,6 @@ const BookmarkContainer = () => {
     };
   }, [pageNum]);
 
-  console.log(posts);
-
   // return <div>Hello</div>;
   if (loading)
     return (
@@ -66,7 +66,8 @@ const BookmarkContainer = () => {
           authorObj={post.author}
           key={`${post._id}-${Date.now()}`}
           saved
-          dis={dispatch}
+          disBook={dispatch}
+          bookId={post._id}
         />
       ))}
 
@@ -77,18 +78,6 @@ const BookmarkContainer = () => {
           </button>
         </div>
       )}
-
-      {/* {!fetchDone && (
-        <div className="px-5">
-          <p>Fetching more ... </p>
-        </div>
-      )} */}
-
-      {/* {fetchDone && (
-        <div className="p-5">
-          <p className="bg-theme text-white p-2 rounded">All Posts Loaded</p>
-        </div>
-      )} */}
     </div>
   );
 };
